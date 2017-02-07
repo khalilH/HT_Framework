@@ -7,4 +7,6 @@ public interface ResponseInterface {
     public void addHeader(String fieldName, String value);
     public void setStatusCode(int statusCode);
     public void setCookie(String key, String value);
+    public int getStatusCode();
+    public String getBody();
 }

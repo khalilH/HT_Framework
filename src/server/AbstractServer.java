@@ -29,9 +29,10 @@ public abstract class AbstractServer implements ServerInterface{
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
-
+        System.out.println("Listening on "+port+"...");
         while (true) {
             clientSockets.add(serverSocket.accept());
+            System.out.println("Connection opened");
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -40,12 +41,19 @@ public abstract class AbstractServer implements ServerInterface{
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         String inputLine, httpRequestText = "";
-                        while ((inputLine = in.readLine()) != null) {
-                            httpRequestText += inputLine;
+                        while (!(inputLine = in.readLine()).equals("")) {
+//                            System.out.println(inputLine);
+                            httpRequestText += inputLine + "\n";
                         }
+                        System.out.println("=============");
+                        System.out.println(httpRequestText);
                         RequestInterface request = RequestAnalyser.analyse(httpRequestText);
                         ResponseInterface response = handleRequest(request);
-                        out.println(response.toString());
+                        out.println("HTTP/1.1 " + response.getStatusCode() + " OK");
+                        out.println("\n\n" + response.getBody());
+                        out.close();
+                        in.close();
+                        clientSocket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

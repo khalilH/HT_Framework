@@ -12,7 +12,7 @@ import java.util.Map;
 public interface RequestInterface {
     public String getUrl();
     public Method getMethod();
-    public Map getHeaders();
+    public Map<String, String> getHeaders();
     public Map<String, String> getCookies();
     public String getCookie(String key);
 
