@@ -23,7 +23,7 @@ public class EchoServer extends AbstractServer {
 
     @Override
     public ResponseInterface handleRequest(RequestInterface request) {
-        String contentType = request.getHeaders().get("Content-type");
+        String contentType = request.getHeaders().get("Content-Type");
         String body = "";
         Map<String, String> headers = request.getHeaders();
         Map<String, String> cookies = request.getCookies();
@@ -57,12 +57,14 @@ public class EchoServer extends AbstractServer {
                                 "    <td>Header de la requête</td>\n" +
                                 "  </tr>";
                     }
-                    for (String key : cookies.keySet()) {
-                        body += "<tr>\n" +
-                                "    <td>" + key + "</td>\n" +
-                                "    <td>" + cookies.get(key) + "</td>\n" +
-                                "    <td>Un cookie</td>\n" +
-                                "  </tr>";
+                    if (cookies != null) {
+                        for (String key : cookies.keySet()) {
+                            body += "<tr>\n" +
+                                    "    <td>" + key + "</td>\n" +
+                                    "    <td>" + cookies.get(key) + "</td>\n" +
+                                    "    <td>Un cookie</td>\n" +
+                                    "  </tr>";
+                        }
                     }
                     body += "</table>";
                     break;
