@@ -5,9 +5,9 @@ package http.interfaces;
  */
 public interface ApplicationInterface {
 
-    Object doGet(RequestInterface requestInterface);
-    Object doPost(RequestInterface requestInterface);
-    Object doPut(RequestInterface requestInterface);
-    Object doDelete(RequestInterface requestInterface);
+    Object doGet(RequestInterface request);
+    Object doPost(RequestInterface resquest);
+    Object doPut(RequestInterface request);
+    Object doDelete(RequestInterface request);
 
 }
