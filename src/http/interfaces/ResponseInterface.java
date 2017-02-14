@@ -8,10 +8,9 @@ public interface ResponseInterface {
     void setStatusCode(int statusCode);
     void setCookie(String key, String value);
     int getStatusCode();
-    String getBody();
+    Object getBody();
+    void setBody(Object body);
 
     @Override
     String toString();
-    String toHTML();
-    String toJson();
 }

@@ -39,14 +39,26 @@ public class Request implements RequestInterface{
         return headers;
     }
 
+
+
     @Override
     public Map<String, String> getCookies() {
         return cookies;
     }
 
     @Override
+    public String getHeader(String header) {
+        return headers.get(header);
+    }
+
+    @Override
     public String getCookie(String key) {
         return cookies.get(key);
+    }
+
+    @Override
+    public String getParameter(String param) {
+        return getUrl().getParameter(param);
     }
 
 }

@@ -1,10 +1,13 @@
 package server;
 
+import exception.MapperFileException;
 import http.RequestAnalyser;
 import http.StatusCode;
 import http.interfaces.RequestInterface;
 import http.interfaces.ResponseInterface;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,15 +19,14 @@ import java.util.List;
 
 public abstract class AbstractServer implements ServerInterface{
 
-    private int port;
-    private ServerSocket serverSocket;
-    private List<Socket> clientSockets;
+    protected int port;
+    protected ServerSocket serverSocket;
+    protected List<Socket> clientSockets;
 
     public AbstractServer(int port) {
         StatusCode.init();
         this.port = port;
         clientSockets = new ArrayList<>();
-
     }
 
     public abstract ResponseInterface handleRequest(RequestInterface request);
@@ -45,14 +47,13 @@ public abstract class AbstractServer implements ServerInterface{
                         String inputLine, httpRequestText = "";
                         while (!(inputLine = in.readLine()).equals("")) {
 //                            System.out.println(inputLine);
-                            httpRequestText += inputLine + "\n";
+                            httpRequestText += inputLine + System.lineSeparator();
                         }
                         System.out.println("=============");
                         System.out.println(httpRequestText);
                         RequestInterface request = RequestAnalyser.analyse(httpRequestText);
                         ResponseInterface response = handleRequest(request);
-                        out.println("HTTP/1.1 " + response.getStatusCode() + " OK");
-                        out.println("\n\n" + response.getBody());
+                        out.println(response.toString());
                         out.close();
                         in.close();
                         clientSocket.close();

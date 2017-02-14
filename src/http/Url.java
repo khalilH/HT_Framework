@@ -54,4 +54,8 @@ public class Url {
     public String toString(){
         return host + entirePath;
     }
+
+    public String getParameter(String param) {
+        return arguments.get(param);
+    }
 }

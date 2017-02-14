@@ -9,11 +9,13 @@ import java.util.Map;
  * Created by patrick.tran on 07/02/2017.
  */
 public interface RequestInterface {
-    public Url getUrl();
-    public Method getMethod();
-    public Map<String, String> getHeaders();
-    public Map<String, String> getCookies();
-    public String getCookie(String key);
+    Url getUrl();
+    Method getMethod();
+    Map<String, String> getHeaders();
+    Map<String, String> getCookies();
+    String getHeader(String header);
+    String getCookie(String key);
+    String getParameter(String param);
 
 
 //    public String getCookie(String key);

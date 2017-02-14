@@ -4,17 +4,21 @@ import http.interfaces.ResponseInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Response implements ResponseInterface{
 
-
+    public Response() {
+        headers = new HashMap<>();
+    }
 
     private int statusCode;
     private Map<String, String> headers;
     private Map<String, String> cookies;
-    private String body;
+    private Object body;
 
     @Override
     public void addHeader(String fieldName, String value) {
@@ -38,48 +42,19 @@ public class Response implements ResponseInterface{
 
     public void setCookies(Map<String, String> cookies) { this.cookies = cookies; }
 
-    public void setBody(String body) { this.body = body; }
-
-    @Override
-    public String getBody(){ return this.body; }
-
-    @Override
-    public String toHTML() {
-        String response = "HTTP/1.1 "+getStatusCode()+" "+StatusCode.getDescription(getStatusCode())+System.lineSeparator();
-        addHeader(Headers.CONTENT_TYPE, Headers.TEXT_HTML);
-        addHeader(Headers.CONTENT_LENGTH, getBody().length()+"");
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            response += entry.getKey() + ": "+entry.getValue()+System.lineSeparator();
-        }
-        response += System.lineSeparator();
-        response += getBody()+System.lineSeparator();
-        return response;
+    public void setBody(Object body) {
+        this.body = body;
+        addHeader(Headers.CONTENT_LENGTH, getBody().toString().length()+"");
     }
 
     @Override
-    public String toJson() {
-        String response = "HTTP/1.1 "+getStatusCode()+" "+StatusCode.getDescription(getStatusCode())+System.lineSeparator();
-        addHeader(Headers.CONTENT_TYPE, Headers.APPLICATION_JSON);
-        JSONObject json = new JSONObject();
-        try {
-            json.put("content", getBody().toString());
-            addHeader(Headers.CONTENT_LENGTH, json.toString().length()+"");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            response += entry.getKey() + ": "+entry.getValue()+System.lineSeparator();
-        }
-        response += System.lineSeparator();
-        response += json.toString()+System.lineSeparator();
-        return response;
-    }
+    public Object getBody(){ return this.body; }
 
     @Override
     public String toString() {
         String response = "HTTP/1.1 "+getStatusCode()+" "+StatusCode.getDescription(getStatusCode())+System.lineSeparator();
-        addHeader(Headers.CONTENT_TYPE, Headers.TEXT_PLAIN);
-        addHeader(Headers.CONTENT_LENGTH, getBody().length()+"");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z");
+        addHeader(Headers.DATE, dateFormat.format((new Date()).getTime()).toString());
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             response += entry.getKey() + ": "+entry.getValue()+System.lineSeparator();
         }
