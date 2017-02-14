@@ -1,4 +1,4 @@
-package apps.PointApp;
+package apps.pointApp;
 
 import http.Url;
 import http.interfaces.ApplicationInterface;
@@ -17,9 +17,9 @@ public class PointId implements ApplicationInterface {
         String coord = tab[3];
         Integer res = null;
         if(coord.equals("x")){
-            res = new Integer(List.points_2.get(id).x);
+            res = new Integer(List.points.get(id).x);
         }else if(coord.equals("y")){
-            res = new Integer(List.points_2.get(id).y);
+            res = new Integer(List.points.get(id).y);
         }
         return res;
     }

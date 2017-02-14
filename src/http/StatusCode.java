@@ -12,6 +12,8 @@ public class StatusCode {
 
     public static final int NOT_FOUND = 404;
     public static final int OK = 200;
+    public static final int METHOD_NOT_ALLOWED = 405;
+
 
     private static Map<Integer, String> statusCodes;
 
@@ -19,6 +21,7 @@ public class StatusCode {
         statusCodes = new HashMap<>();
         statusCodes.put(NOT_FOUND, "Not Found");
         statusCodes.put(OK, "OK");
+        statusCodes.put(METHOD_NOT_ALLOWED, "Method Not Allowed");
 
     }
 

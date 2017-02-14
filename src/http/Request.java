@@ -10,6 +10,7 @@ public class Request implements RequestInterface{
     private Method method;
     private Map<String, String> headers;
     private Map<String, String> cookies;
+    private String body;
 
     public Request() {
         headers = new HashMap<>();
@@ -21,7 +22,6 @@ public class Request implements RequestInterface{
         this.method = method;
         this.headers = headers;
         this.cookies = cookies;
-
     }
 
     @Override
@@ -49,6 +49,11 @@ public class Request implements RequestInterface{
     @Override
     public String getHeader(String header) {
         return headers.get(header);
+    }
+
+    @Override
+    public String getBody() {
+        return body;
     }
 
     @Override

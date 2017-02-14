@@ -42,6 +42,8 @@ public class RequestAnalyser {
 
         // Getting the cookies ??
 
+        // Getting the body
+
         res = new Request(url, method, headers, null);
 
         return res;

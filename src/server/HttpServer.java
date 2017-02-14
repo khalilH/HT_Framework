@@ -1,6 +1,8 @@
 package server;
 
+import apps.pointApp.List;
 import exception.MapperFileException;
+import exception.MethodNotAllowedException;
 import http.Headers;
 import http.Response;
 import http.StatusCode;
@@ -35,6 +37,7 @@ public class HttpServer extends AbstractServer {
         Url url = request.getUrl();
         String path = url.getPath();
         String className = "";
+        ResponseInterface response = null;
         for(String pattern : router.getPatterns()){
             if(Pattern.matches(pattern, path))
                 className = router.getMapping(pattern);
@@ -62,7 +65,7 @@ public class HttpServer extends AbstractServer {
 
             Method method = methodClass.getMethod(methodName, RequestInterface.class);
             Object body = method.invoke(classInstance, request);
-            ResponseInterface response = new Response();
+            response = new Response();
             response.setStatusCode(StatusCode.OK);
             response.setBody(body);
             response.addHeader(Headers.CONTENT_TYPE, request.getHeader(Headers.CONTENT_TYPE));
@@ -75,10 +78,25 @@ public class HttpServer extends AbstractServer {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof MethodNotAllowedException) {
+                response = new Response();
+                response.setStatusCode(StatusCode.METHOD_NOT_ALLOWED);
+                response.setBody(e.getCause().getMessage()+" not allowed");
+            } else {
             e.printStackTrace();
+            }
         }
 
-        return null;
+        return response;
     }
 
+
+    public static void main(String[] args) {
+        try {
+            HttpServer httpServer = new HttpServer(80);
+            httpServer.start();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
 }

@@ -14,6 +14,7 @@ public interface RequestInterface {
     Map<String, String> getHeaders();
     Map<String, String> getCookies();
     String getHeader(String header);
+    String getBody();
     String getCookie(String key);
     String getParameter(String param);
 
