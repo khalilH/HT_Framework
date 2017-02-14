@@ -4,6 +4,7 @@ import http.interfaces.ResponseInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Response implements ResponseInterface{

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routing>
+    <mapping>
+        <name>list</name>
+        <class>apps.PointApp.List</class>
+        <url>/list</url>
+    </mapping>>
+
+    <mapping>
+        <name>Point</name>
+        <class>apps.PointApp.Point</class>
+        <url>/p</url>
+    </mapping>
+
+    <mapping>
+        <name>PointId</name>
+        <class>apps.PointApp.PointId</class>
+        <url>/p/[0-9]+/(x|y)?</url>
+    </mapping>
+
+    <!-- Pour faire une classe par url (et rediriger en fonction de la méthode et des paramètres)
+    <mapping>
+        <name>Point</name>
+        <class>truc.truc.Point</class>
+        <url>/p(\/[0-9]+)?(\/[x|y])?(\?.*)</url>
+    </mapping>
+    -->
+
+</routing>
