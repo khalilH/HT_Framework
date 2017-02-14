@@ -1,6 +1,7 @@
 package server;
 
 import http.RequestAnalyser;
+import http.StatusCode;
 import http.interfaces.RequestInterface;
 import http.interfaces.ResponseInterface;
 
@@ -20,6 +21,7 @@ public abstract class AbstractServer implements ServerInterface{
     private List<Socket> clientSockets;
 
     public AbstractServer(int port) {
+        StatusCode.init();
         this.port = port;
         clientSockets = new ArrayList<>();
 

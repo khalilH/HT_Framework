@@ -4,9 +4,14 @@ package http.interfaces;
  * Created by patrick.tran on 07/02/2017.
  */
 public interface ResponseInterface {
-    public void addHeader(String fieldName, String value);
-    public void setStatusCode(int statusCode);
-    public void setCookie(String key, String value);
-    public int getStatusCode();
-    public String getBody();
+    void addHeader(String fieldName, String value);
+    void setStatusCode(int statusCode);
+    void setCookie(String key, String value);
+    int getStatusCode();
+    String getBody();
+
+    @Override
+    String toString();
+    String toHTML();
+    String toJson();
 }

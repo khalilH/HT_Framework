@@ -49,20 +49,4 @@ public class Request implements RequestInterface{
         return cookies.get(key);
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
-
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
-    }
-
-    public void setCookies(Map<String, String> cookies) {
-        this.cookies = cookies;
-    }
-
 }
