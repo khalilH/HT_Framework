@@ -42,7 +42,7 @@ public class EchoServer extends AbstractServer {
                             "  </tr>\n" +
                             "  <tr>\n" +
                             "    <td>URL</td>\n" +
-                            "    <td>" + request.getUrl() + "</td>\n" +
+                            "    <td>" + request.getUrl().toString() + "</td>\n" +
                             "    <td>URL à partir de laquelle la requête a été faite</td>\n" +
                             "  </tr>\n" +
                             "  <tr>\n" +
@@ -71,7 +71,7 @@ public class EchoServer extends AbstractServer {
                 case "application/json":
                     try {
                         JSONObject json = new JSONObject();
-                        json.put("URL", request.getUrl());
+                        json.put("URL", request.getUrl().toString());
                         json.put("Method", request.getMethod());
                         json.put("Headers", request.getHeaders());
                         json.put("Cookies", request.getCookies());
@@ -82,7 +82,7 @@ public class EchoServer extends AbstractServer {
                     break;
                 default:
                     // text/plain & default
-                    String route = request.getUrl().substring(request.getHeaders().get("Host").length());
+                    String route = request.getUrl().getEntirePath();
                     body = request.getMethod() + " " + route + " HTTP/1.1\n";
                     for (String key : headers.keySet()) {
                         body += key + ": " + headers.get(key) + "\n";
@@ -91,7 +91,7 @@ public class EchoServer extends AbstractServer {
             }
         }else{
             // text/plain & default
-            String route = request.getUrl().substring(request.getHeaders().get("Host").length());
+            String route = request.getUrl().getEntirePath();
             body = request.getMethod() + " " + route + " HTTP/1.1\n";
             for (String key : headers.keySet()) {
                 body += key + ": " + headers.get(key) + "\n";

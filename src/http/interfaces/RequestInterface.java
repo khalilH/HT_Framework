@@ -1,16 +1,15 @@
 package http.interfaces;
 
-import http.Cookie;
 import http.Method;
+import http.Url;
 
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by patrick.tran on 07/02/2017.
  */
 public interface RequestInterface {
-    public String getUrl();
+    public Url getUrl();
     public Method getMethod();
     public Map<String, String> getHeaders();
     public Map<String, String> getCookies();

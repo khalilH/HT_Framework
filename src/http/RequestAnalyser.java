@@ -14,7 +14,7 @@ public class RequestAnalyser {
     public static Request analyse(String request){
         Request res;
         Method method = null;
-        String url = "";
+        Url url = new Url();
         HashMap<String, String> headers = new HashMap<>();
         Scanner scanner = new Scanner(request);
         String line;
@@ -26,7 +26,7 @@ public class RequestAnalyser {
             tab = line.split(" ");
             if (tab != null) {
                 method = Method.valueOf(tab[0]);
-                url = tab[1];
+                url.parseUrl(tab[1]);
             }
         }
 
@@ -38,7 +38,7 @@ public class RequestAnalyser {
         }
 
         // Getting the URL
-        url = headers.get("Host") + url;
+        url.setHost(headers.get(Headers.HOST));
 
         // Getting the cookies ??
 

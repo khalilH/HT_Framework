@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Request implements RequestInterface{
-    private String url;
+    private Url url;
     private Method method;
     private Map<String, String> headers;
     private Map<String, String> cookies;
@@ -16,7 +16,7 @@ public class Request implements RequestInterface{
         cookies = new HashMap<>();
     }
 
-    public Request(String url, Method method, Map<String, String> headers, Map<String, String> cookies) {
+    public Request(Url url, Method method, Map<String, String> headers, Map<String, String> cookies) {
         this.url = url;
         this.method = method;
         this.headers = headers;
@@ -25,7 +25,7 @@ public class Request implements RequestInterface{
     }
 
     @Override
-    public String getUrl() {
+    public Url getUrl() {
         return url;
     }
 
