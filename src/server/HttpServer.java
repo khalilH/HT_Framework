@@ -83,7 +83,14 @@ public class HttpServer extends AbstractServer {
                 response.setStatusCode(StatusCode.METHOD_NOT_ALLOWED);
                 response.setBody(e.getCause().getMessage()+" not allowed");
             } else {
-            e.printStackTrace();
+                System.out.println(e.getCause());
+                e.printStackTrace();
+            }
+        } finally {
+            if (response == null) {
+                response = new Response();
+                response.setStatusCode(StatusCode.INTERNAL_SERVER_ERROR);
+                response.setBody("internal server error");
             }
         }
 

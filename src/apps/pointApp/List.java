@@ -4,6 +4,7 @@ import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
 
 import java.awt.Point;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,6 +15,7 @@ public class List implements ApplicationInterface{
 
     public static Map<Integer, java.awt.Point> points;
     static {
+        points = new HashMap<>();
         points.put(1, new Point(1,1));
         points.put(2, new Point(2,2));
         points.put(3, new Point(3,3));

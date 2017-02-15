@@ -1,9 +1,6 @@
 package tests;
 
 
-import http.Request;
-import http.RequestAnalyser;
-
 import java.io.IOException;
 
 /**
@@ -18,7 +15,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
 }

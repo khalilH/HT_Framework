@@ -19,9 +19,6 @@ import java.util.regex.Pattern;
 
 public class Router {
 
-    // Pour plus tard verifier que le fichier xml fourni est valide, pour l'instant on suppose qu'il est tjr valide
-    // Construire la map des routes au lancement du server ?
-
     private static final String MAPPING = "mapping";
     private static final String CLASS = "class";
     private static final String URL_PATTERN = "url-pattern";

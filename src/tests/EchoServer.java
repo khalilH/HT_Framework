@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import server.AbstractServer;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -100,5 +101,14 @@ public class EchoServer extends AbstractServer {
 
         res.setBody(body);
         return res;
+    }
+
+    public static void main(String [] args){
+        try {
+            EchoServer echoServer = new EchoServer(80);
+            echoServer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
