@@ -15,7 +15,7 @@
     <mapping>
         <name>PointId</name>
         <class>apps.pointApp.PointId</class>
-        <url-pattern>/p/[0-9]+/(x|y)?</url-pattern>
+        <url-pattern>/p/[0-9]+/(x|y)</url-pattern>
     </mapping>
 
     <mapping>
