@@ -39,8 +39,6 @@ public class Request implements RequestInterface{
         return headers;
     }
 
-
-
     @Override
     public Map<String, String> getCookies() {
         return cookies;

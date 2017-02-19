@@ -45,9 +45,41 @@ public abstract class AbstractServer implements ServerInterface{
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         String inputLine, httpRequestText = "";
-                        while (!(inputLine = in.readLine()).equals("")) {
-//                            System.out.println(inputLine);
-                            httpRequestText += inputLine + System.lineSeparator();
+                        // hasBody permet de savoir si on a un body, isReadingBodu permet de savoir si on est en train de lire le body
+                        boolean hasBody = false, isReadingBody = false;
+                        // longueur du body
+                        int contentLength = 0;
+                        inputLine = in.readLine();
+                        // tant que la ligne est non vide OU vide mais qu'il y a un body, on continue
+                        while (!inputLine.equals("") || (inputLine.equals("") && hasBody == true)) {
+                            System.out.println(inputLine);
+                            // pour savoir s'il y a un body en récupérant aussi sa taille
+                            if(inputLine.contains("Content-Length:")) {
+                                hasBody = true;
+                                contentLength = Integer.parseInt(inputLine.split(": ")[1]);
+                            }
+                            // si la ligne est vide c'est qu'on atteint la séparation entre headers et body donc on entre dans la phase de lecture du body
+                            // on passe donc le traitement de la ligne courante ("") avec continue
+                            if(inputLine.equals("")) {
+                                hasBody = false;
+                                isReadingBody = true;
+                            }
+                            // si on ne lit pas le body, on lit la ligne de manière habituelle (pas d'action suplémentaire nécessaire)
+                            // sinon on lit le body char par char car il ne contient pas de retour chariot à la fin
+                            // RAPPEL : le content type d'un POST avec body est SOUVENT "application/x-www-form-urlencoded" et le body est en format "parameter=value&also=another"
+                            //          http://stackoverflow.com/questions/14551194/how-are-parameters-sent-in-an-http-post-request
+                            if(isReadingBody){
+                                char[] params = new char[contentLength];
+                                isReadingBody = false;
+                                in.read(params, 0, contentLength);
+//                                System.out.println(new String(params));
+                                inputLine = new String(params);
+                                httpRequestText += System.lineSeparator() + inputLine + System.lineSeparator();
+                                break;
+                            }else{
+                                httpRequestText += inputLine + System.lineSeparator();
+                                inputLine = in.readLine();
+                            }
                         }
                         System.out.println("=============");
                         System.out.println(httpRequestText);

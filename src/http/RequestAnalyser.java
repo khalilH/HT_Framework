@@ -33,6 +33,7 @@ public class RequestAnalyser {
         // Getting the headers
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();
+            //TODO A adapter pcq j'ai mis un retour chariot entre les headers et le body (on peut l'enlever aussi) 
             tab = line.split(": ");
             headers.put(tab[0], tab[1]);
         }
