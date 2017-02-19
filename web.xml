@@ -18,6 +18,14 @@
         <url-pattern>/p/[0-9]+/(x|y)?</url-pattern>
     </mapping>
 
+    <mapping>
+        <name>PointId2</name>
+        <class>apps.pointApp.PointId2</class>
+        <url-pattern>/p/[0-9]+</url-pattern>
+    </mapping>
+
+
+
     <!-- Pour faire une classe par url (et rediriger en fonction de la méthode et des paramètres)
     <mapping>
         <name>Point</name>

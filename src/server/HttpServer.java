@@ -43,54 +43,61 @@ public class HttpServer extends AbstractServer {
                 className = router.getMapping(pattern);
         }
 
-        // Instantiating
-        try {
-            Class methodClass = Class.forName(className);
-            Object classInstance = methodClass.newInstance();
-            String methodName = "";
-            switch (request.getMethod()){
-                case GET:
-                    methodName = "doGet";
-                    break;
-                case PUT:
-                    methodName = "doPut";
-                    break;
-                case POST:
-                    methodName = "doPost";
-                    break;
-                case DELETE:
-                    methodName = "doDelete";
-                    break;
-            }
 
-            Method method = methodClass.getMethod(methodName, RequestInterface.class);
-            Object body = method.invoke(classInstance, request);
+        // Gestion favicon.ico
+        if (path.equals("/favicon.ico")) {
             response = new Response();
             response.setStatusCode(StatusCode.OK);
-            response.setBody(body);
-            response.addHeader(Headers.CONTENT_TYPE, request.getHeader(Headers.CONTENT_TYPE));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof MethodNotAllowedException) {
+        } else {
+            // Instantiating
+            try {
+                Class methodClass = Class.forName(className);
+                Object classInstance = methodClass.newInstance();
+                String methodName = "";
+                switch (request.getMethod()) {
+                    case GET:
+                        methodName = "doGet";
+                        break;
+                    case PUT:
+                        methodName = "doPut";
+                        break;
+                    case POST:
+                        methodName = "doPost";
+                        break;
+                    case DELETE:
+                        methodName = "doDelete";
+                        break;
+                }
+
+                Method method = methodClass.getMethod(methodName, RequestInterface.class);
+                Object body = method.invoke(classInstance, request);
                 response = new Response();
-                response.setStatusCode(StatusCode.METHOD_NOT_ALLOWED);
-                response.setBody(e.getCause().getMessage()+" not allowed");
-            } else {
-                System.out.println(e.getCause());
+                response.setStatusCode(StatusCode.OK);
+                response.setBody(body);
+                response.addHeader(Headers.CONTENT_TYPE, request.getHeader(Headers.CONTENT_TYPE));
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-            }
-        } finally {
-            if (response == null) {
-                response = new Response();
-                response.setStatusCode(StatusCode.INTERNAL_SERVER_ERROR);
-                response.setBody("internal server error");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                if (e.getCause() instanceof MethodNotAllowedException) {
+                    response = new Response();
+                    response.setStatusCode(StatusCode.METHOD_NOT_ALLOWED);
+                    response.setBody(e.getCause().getMessage() + " method not allowed");
+                } else {
+                    System.out.println(e.getCause());
+                    e.printStackTrace();
+                }
+            } finally {
+                if (response == null) {
+                    response = new Response();
+                    response.setStatusCode(StatusCode.INTERNAL_SERVER_ERROR);
+                    response.setBody("internal server error");
+                }
             }
         }
 

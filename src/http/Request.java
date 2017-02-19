@@ -21,6 +21,7 @@ public class Request implements RequestInterface{
         this.url = url;
         this.method = method;
         this.headers = headers;
+        this.body = null;
         this.cookies = cookies;
     }
 
@@ -52,6 +53,11 @@ public class Request implements RequestInterface{
     @Override
     public String getBody() {
         return body;
+    }
+
+    @Override
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Override

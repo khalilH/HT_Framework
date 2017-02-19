@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 public class Router {
 
@@ -27,7 +26,6 @@ public class Router {
     private Map<String, String> mapping;
     private String xmlFilename;
     private Document document;
-
     public Router() {
         mapping = new HashMap<>();
         xmlFilename = "web.xml";
@@ -76,6 +74,10 @@ public class Router {
                 mapping.put(urlPattern, _class);
             }
         }
+        // Ici on ajoutera les application de gestion manuellement
+        mapping.put("/", "apps.managerApp.Manager");
+//        mapping.put("/help", "apps.managerApp.Help");
+//        mapping.put("/", "apps.managerApp.Manager");
     }
 
     public Set<String> getPatterns() {

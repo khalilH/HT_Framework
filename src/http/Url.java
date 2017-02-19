@@ -18,8 +18,8 @@ public class Url {
         entirePath = pathWithoutFragment[0];
         String[] tmp = pathWithoutFragment[0].split("\\?");
         setPath(tmp[0]);
-        if(tmp.length > 1){
             arguments = new HashMap<>();
+        if(tmp.length > 1){
             String[] args = tmp[1].split("&");
             String[] entry;
             for(String arg : args){

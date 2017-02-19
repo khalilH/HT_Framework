@@ -1,8 +1,5 @@
 package http;
 
-import http.Method;
-import http.Request;
-
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -17,8 +14,9 @@ public class RequestAnalyser {
         Url url = new Url();
         HashMap<String, String> headers = new HashMap<>();
         Scanner scanner = new Scanner(request);
-        String line;
+        String line, body = "";
         String[] tab;
+        boolean readBody = false;
 
         // Getting the METHOD
         if(scanner.hasNextLine()) {
@@ -30,12 +28,19 @@ public class RequestAnalyser {
             }
         }
 
-        // Getting the headers
+        // Getting the headers & body if present
         while (scanner.hasNextLine()) {
             line = scanner.nextLine();
-            //TODO A adapter pcq j'ai mis un retour chariot entre les headers et le body (on peut l'enlever aussi) 
             tab = line.split(": ");
-            headers.put(tab[0], tab[1]);
+            if (tab.length == 2) {
+                headers.put(tab[0], tab[1]);
+            }
+            else {
+                if (readBody) // lecture du body
+                    body = line;
+                else // lecture de la ligne vide, la prochaine ligne attendu est le body
+                    readBody = true;
+            }
         }
 
         // Getting the URL
@@ -43,9 +48,9 @@ public class RequestAnalyser {
 
         // Getting the cookies ??
 
-        // Getting the body
-
         res = new Request(url, method, headers, null);
+        if (body.length() > 0)
+            res.setBody(body);
 
         return res;
     }

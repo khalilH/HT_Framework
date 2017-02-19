@@ -4,6 +4,9 @@ import http.Url;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
 
+import java.awt.*;
+import java.awt.Point;
+
 /**
  * Created by Khalil on 14/02/2017.
  */
@@ -23,5 +26,4 @@ public class PointId implements ApplicationInterface {
         }
         return res;
     }
-
  }

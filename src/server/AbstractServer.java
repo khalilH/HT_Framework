@@ -52,7 +52,6 @@ public abstract class AbstractServer implements ServerInterface{
                         inputLine = in.readLine();
                         // tant que la ligne est non vide OU vide mais qu'il y a un body, on continue
                         while (!inputLine.equals("") || (inputLine.equals("") && hasBody == true)) {
-                            System.out.println(inputLine);
                             // pour savoir s'il y a un body en récupérant aussi sa taille
                             if(inputLine.contains("Content-Length:")) {
                                 hasBody = true;
@@ -68,6 +67,11 @@ public abstract class AbstractServer implements ServerInterface{
                             // sinon on lit le body char par char car il ne contient pas de retour chariot à la fin
                             // RAPPEL : le content type d'un POST avec body est SOUVENT "application/x-www-form-urlencoded" et le body est en format "parameter=value&also=another"
                             //          http://stackoverflow.com/questions/14551194/how-are-parameters-sent-in-an-http-post-request
+
+                            // LADI : Dans la plupart des cas c'est ca, mais le body peut etre sous n'importe quel Content-Type.
+                            // sur mozilla quand j'envoie du text brut c'est du text/plain
+                            // et pour cheapmeal halitran il me semble qu'on mettait parfois application/json dans nos requetes ajax
+
                             if(isReadingBody){
                                 char[] params = new char[contentLength];
                                 isReadingBody = false;
