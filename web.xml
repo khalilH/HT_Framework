@@ -21,10 +21,11 @@
     <mapping>
         <name>PointId2</name>
         <class>apps.pointApp.PointId2</class>
-        <url-pattern>/p/[0-9]+</url-pattern>
+        <url-pattern>/p/[0-9]+((\?x=\d+&amp;y=\d+)|(\?x=\d+)|(\?y=\d+))?</url-pattern>
     </mapping>
 
-
+    <!-- forcer l'utilisateur a mettre les bons pattern s'il attend des parametres dans l'url, s'il
+     n'ecrit pas la regex dans le bon format tant pis pour lui -->
 
     <!-- Pour faire une classe par url (et rediriger en fonction de la méthode et des paramètres)
     <mapping>

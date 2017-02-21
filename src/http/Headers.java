@@ -13,6 +13,7 @@ public class Headers {
     public static final String APPLICATION_JSON = "application/json";
     public static final String HOST = "Host";
     public static final String DATE = "Date";
+    public static final String ACCEPT = "Accept";
 
 
 }
