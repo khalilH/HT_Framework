@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Response implements ResponseInterface{
@@ -17,7 +18,7 @@ public class Response implements ResponseInterface{
 
     private int statusCode;
     private Map<String, String> headers;
-    private Map<String, String> cookies;
+    private List<Cookie> cookies;
     private Object body;
 
     @Override
@@ -34,13 +35,14 @@ public class Response implements ResponseInterface{
     public int getStatusCode(){ return this.statusCode; }
 
     @Override
-    public void setCookie(String key, String value) {
-        cookies.put(key, value);
+    public void addCookie(Cookie cookie) {
+        cookies.add(cookie);
     }
 
     public void setHeaders(Map<String, String> headers) { this.headers = headers; }
 
-    public void setCookies(Map<String, String> cookies) { this.cookies = cookies; }
+
+
 
     public void setBody(Object body) {
         this.body = body;

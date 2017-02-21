@@ -14,6 +14,10 @@ public class Headers {
     public static final String HOST = "Host";
     public static final String DATE = "Date";
     public static final String ACCEPT = "Accept";
+    public static final String SET_COOKIE = "Set-Cookie";
+    public static final String COOKIE = "Cookie";
+    public static final String USER_AGENT = "User-Agent";
+
 
 
 }

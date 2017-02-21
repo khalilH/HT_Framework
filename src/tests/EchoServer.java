@@ -28,7 +28,7 @@ public class EchoServer extends AbstractServer {
         String accept = request.getHeaders().get(Headers.ACCEPT);
         String ResponseBody = "";
         Map<String, String> headers = request.getHeaders();
-        Map<String, String> cookies = request.getCookies();
+//        Map<String, String> cookies = request.getCookies();
 
         Response res = new Response();
         res.setStatusCode(StatusCode.OK);
@@ -58,15 +58,15 @@ public class EchoServer extends AbstractServer {
                             "    <td>Header de la requête</td>\n" +
                             "  </tr>";
                 }
-                if (cookies != null) {
-                    for (String key : cookies.keySet()) {
-                        ResponseBody += "<tr>\n" +
-                                "    <td>" + key + "</td>\n" +
-                                "    <td>" + cookies.get(key) + "</td>\n" +
-                                "    <td>Un cookie</td>\n" +
-                                "  </tr>";
-                    }
-                }
+//                if (cookies != null) {
+//                    for (String key : cookies.keySet()) {
+//                        ResponseBody += "<tr>\n" +
+//                                "    <td>" + key + "</td>\n" +
+//                                "    <td>" + cookies.get(key) + "</td>\n" +
+//                                "    <td>Un cookie</td>\n" +
+//                                "  </tr>";
+//                    }
+//                }
                 if (request.getBody() != null) {
                     ResponseBody += "<tr>\n" +
                             "    <td>Corps de la requete</td>\n" +

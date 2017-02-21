@@ -2,6 +2,7 @@ package apps.pointApp;
 
 import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
+import http.interfaces.SessionInterface;
 
 import static apps.pointApp.List.points;
 
@@ -11,7 +12,7 @@ import static apps.pointApp.List.points;
 public class Point implements ApplicationInterface{
 
     @Override
-    public Object doPost(RequestInterface request) {
+    public Object doPost(RequestInterface request, SessionInterface session) {
         String body = request.getBody();
         String[] point = body.split(",");
         int x = Integer.parseInt(point[0]);

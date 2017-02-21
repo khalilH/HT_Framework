@@ -1,17 +1,20 @@
 package server;
 
-import apps.pointApp.List;
 import exception.MapperFileException;
 import exception.MethodNotAllowedException;
 import http.*;
 import http.interfaces.RequestInterface;
 import http.interfaces.ResponseInterface;
+import http.interfaces.SessionInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -35,11 +38,64 @@ public class HttpServer extends AbstractServer {
         String path = url.getPath();
         String className = "";
         ResponseInterface response = null;
+        Cookie idCookie = null;
+
+        // Saving the cookies
+        String userHash = CookieTable.sha256(request.getIp()+request.getHeader(Headers.USER_AGENT));
+        boolean hasUniqueIdCookie = false;
+        Cookie tmpCookie = null;
+        String uniqueId = null;
+        for(Cookie cookie : request.getCookies()) {
+            if(cookie.getKey() == CookieTable.UNIQUE_ID) {
+                hasUniqueIdCookie = true;
+                uniqueId = cookie.getValue();
+                break;
+            }
+        }
+
+        List<Cookie> userCookies;
+        SessionInterface session = null;
+
+        // Associating the cookies to the userUniqueId if needed
+        if(hasUniqueIdCookie) {
+            if(CookieTable.cookieMap.containsKey(tmpCookie.getValue())){
+
+                Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
+                if(privateCookie.getValue().equals(userHash)) {
+                    SessionInterface _session = SessionTable.getUserSession(uniqueId);
+                    if (session.isAlive()) {
+                        session = _session;
+                    }
+                }else{
+                    System.out.println("Fucking hacker, emptying cookie list");
+                    idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+                    Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+                    List<Cookie> cookieList = new ArrayList<>();
+                    cookieList.add(0,hashCookie);
+                    CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
+                }
+
+            }else{
+                System.out.println("Fucking noob hacker, emptying cookie list");
+                idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+                Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+                List<Cookie> cookieList = new ArrayList<>();
+                cookieList.add(0,hashCookie);
+                CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
+            }
+        } else {
+            idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+            Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+            List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
+            requestCookiesClone.add(0,hashCookie);
+            CookieTable.addCookiesToUser(idCookie.getValue(), requestCookiesClone);
+        }
+
+
         for(String pattern : router.getPatterns()){
             if(Pattern.matches(pattern, path))
                 className = router.getMapping(pattern);
         }
-
 
         // Gestion favicon.ico
         if (path.equals("/favicon.ico")) {
@@ -66,9 +122,9 @@ public class HttpServer extends AbstractServer {
                         break;
                 }
 
-                Method method = methodClass.getMethod(methodName, RequestInterface.class);
+                Method method = methodClass.getMethod(methodName, RequestInterface.class, SessionInterface.class);
 
-                Object body = method.invoke(classInstance, request);
+                Object body = method.invoke(classInstance, request, session);
                 response = new Response();
                 response.setStatusCode(StatusCode.OK);
                 response.setBody(body);
@@ -102,7 +158,9 @@ public class HttpServer extends AbstractServer {
                 }
             }
         }
-
+        if (idCookie != null) {
+            response.addCookie(idCookie);
+        }
         return response;
     }
 

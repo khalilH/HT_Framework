@@ -1,6 +1,8 @@
 package http;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -13,6 +15,7 @@ public class RequestAnalyser {
         Method method = null;
         Url url = new Url();
         HashMap<String, String> headers = new HashMap<>();
+        List<Cookie> cookies = new ArrayList<>();
         Scanner scanner = new Scanner(request);
         String line, body = "";
         String[] tab;
@@ -33,7 +36,12 @@ public class RequestAnalyser {
             line = scanner.nextLine();
             tab = line.split(": ");
             if (tab.length == 2) {
-                headers.put(tab[0], tab[1]);
+                if(tab[0].equals(Headers.SET_COOKIE)){
+                    String[] tmp = tab[1].split("=");
+                    cookies.add(new Cookie(tmp[0],tmp[1]));
+                }else {
+                    headers.put(tab[0], tab[1]);
+                }
             }
             else {
                 if (readBody) // lecture du body
@@ -43,17 +51,17 @@ public class RequestAnalyser {
             }
         }
 
+
         // Getting the URL
         url.setHost(headers.get(Headers.HOST));
 
-        // Getting the cookies ??
-
-        res = new Request(url, method, headers, null);
+        res = new Request(url, method, headers, cookies);
         if (body.length() > 0)
             res.setBody(body);
 
         return res;
     }
+
 
 
 }

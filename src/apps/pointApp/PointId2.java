@@ -3,6 +3,7 @@ package apps.pointApp;
 import http.Url;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
+import http.interfaces.SessionInterface;
 
 import java.awt.Point;
 
@@ -12,7 +13,7 @@ import java.awt.Point;
 public class PointId2 implements ApplicationInterface {
 
     @Override
-    public Object doPut(RequestInterface request) {
+    public Object doPut(RequestInterface request, SessionInterface session) {
         String[] tab = request.getUrl().getPath().split("/");
         int id = Integer.parseInt(tab[2]);
         String xx = request.getParameter("x");
@@ -45,7 +46,7 @@ public class PointId2 implements ApplicationInterface {
     }
 
     @Override
-    public Object doDelete(RequestInterface request) {
+    public Object doDelete(RequestInterface request, SessionInterface session) {
         String[] tab = request.getUrl().getPath().split("/");
         int id = Integer.parseInt(tab[2]);
         if (List.points.containsKey(id)) {

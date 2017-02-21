@@ -1,7 +1,10 @@
 package apps.pointApp;
 
+import http.Session;
+import http.SessionManager;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
+import http.interfaces.SessionInterface;
 
 import java.awt.Point;
 import java.util.HashMap;
@@ -24,7 +27,10 @@ public class List implements ApplicationInterface{
     }
 
     @Override
-    public Object doGet(RequestInterface request) {
+    public Object doGet(RequestInterface request, SessionInterface session) {
+        Session s = new Session(points);
+        SessionManager.save(request.getUniqueId(), s);
         return points.keySet();
+
     }
 }
