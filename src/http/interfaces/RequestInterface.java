@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by patrick.tran on 07/02/2017.
+ *
  */
 public interface RequestInterface {
     Url getUrl();
@@ -26,6 +26,4 @@ public interface RequestInterface {
     String getIp();
 
 
-//    public String getCookie(String key);
-//    public Object getHeader(String fieldName);
 }

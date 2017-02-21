@@ -1,7 +1,7 @@
 package exception;
 
 /**
- * Created by Khalil on 14/02/2017.
+ * Exception permettant
  */
 public class MethodNotAllowedException extends Exception {
     public MethodNotAllowedException(String msg) {

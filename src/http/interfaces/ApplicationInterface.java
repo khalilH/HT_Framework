@@ -4,7 +4,7 @@ import exception.MethodNotAllowedException;
 import http.Method;
 
 /**
- * Created by Khalil on 14/02/2017.
+ * Interface devant etre implemente par les utilisateurs souhaitant ecrire des services
  */
 public interface ApplicationInterface {
 

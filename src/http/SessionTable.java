@@ -16,10 +16,13 @@ public class SessionTable {
     }
 
     public static SessionInterface getUserSession(String uniqueId) {
-        return sessionMap.get(uniqueId);
+        SessionInterface session = sessionMap.get(uniqueId);
+        session.updateLastAccess();
+        return session;
     }
 
     public static void saveSession(String uniqueId, SessionInterface session) {
+        session.updateLastAccess();
         sessionMap.put(uniqueId, session);
     }
 }
