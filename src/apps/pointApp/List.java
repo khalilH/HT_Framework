@@ -1,7 +1,5 @@
 package apps.pointApp;
 
-import http.Session;
-import http.SessionManager;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
@@ -28,8 +26,6 @@ public class List implements ApplicationInterface{
 
     @Override
     public Object doGet(RequestInterface request, SessionInterface session) {
-        Session s = new Session(points);
-        SessionManager.save(request.getUniqueId(), s);
         return points.keySet();
 
     }

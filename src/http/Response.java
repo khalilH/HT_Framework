@@ -5,15 +5,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Response implements ResponseInterface{
 
     public Response() {
         headers = new HashMap<>();
+        cookies = new ArrayList<>();
     }
 
     private int statusCode;

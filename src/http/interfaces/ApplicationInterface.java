@@ -8,6 +8,8 @@ import http.Method;
  */
 public interface ApplicationInterface {
 
+    //Retourner directement la reponse/template d'erreur ??
+
     default Object doGet(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.GET.toString());
     };

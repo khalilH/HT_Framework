@@ -144,6 +144,7 @@ public class HttpServer extends AbstractServer {
                 response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
+                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
             } catch (InvocationTargetException e) {
                 e.printStackTrace(); // TODO logs
                 if (e.getCause() instanceof MethodNotAllowedException) {

@@ -24,6 +24,30 @@
         <url-pattern>/p/[0-9]+((\?x=\d+&amp;y=\d+)|(\?x=\d+)|(\?y=\d+))?</url-pattern>
     </mapping>
 
+    <mapping>
+        <name>Inscription</name>
+        <class>apps.authenticationApp.Inscription</class>
+        <url-pattern>/notes/inscription\?login=\w+&amp;password=\w+</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>Connexion</name>
+        <class>apps.authenticationApp.Connexion</class>
+        <url-pattern>/notes/login\?login=\w+&amp;password=\w+</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>ListerNotes</name>
+        <class>apps.authenticationApp.ListerNotes</class>
+        <url-pattern>/notes/list</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>SauverNote</name>
+        <class>apps.authenticationApp.SauverNote</class>
+        <url-pattern>/notes/add?note=\w+</url-pattern>
+    </mapping>
+
     <!-- forcer l'utilisateur a mettre les bons pattern s'il attend des parametres dans l'url, s'il
      n'ecrit pas la regex dans le bon format tant pis pour lui -->
 
