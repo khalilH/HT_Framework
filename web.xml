@@ -33,7 +33,7 @@
     <mapping>
         <name>Connexion</name>
         <class>apps.authenticationApp.Connexion</class>
-        <url-pattern>/notes/login\?login=\w+&amp;password=\w+</url-pattern>
+        <url-pattern>/notes/connexion\?login=\w+&amp;password=\w+</url-pattern>
     </mapping>
 
     <mapping>
@@ -45,7 +45,7 @@
     <mapping>
         <name>SauverNote</name>
         <class>apps.authenticationApp.SauverNote</class>
-        <url-pattern>/notes/add?note=\w+</url-pattern>
+        <url-pattern>/notes/add\?note=\w+</url-pattern>
     </mapping>
 
     <!-- forcer l'utilisateur a mettre les bons pattern s'il attend des parametres dans l'url, s'il

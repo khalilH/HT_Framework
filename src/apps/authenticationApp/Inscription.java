@@ -12,7 +12,6 @@ public class Inscription implements ApplicationInterface {
     @Override
     public Object doGet(RequestInterface request, SessionInterface session){
         // Ici on n'utilise pas de session
-
         String login, password;
         login = request.getParameter("login");
         password = request.getParameter("password");

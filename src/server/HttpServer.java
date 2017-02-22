@@ -35,7 +35,7 @@ public class HttpServer extends AbstractServer {
     public ResponseInterface handleRequest(RequestInterface request) {
         // Getting the class to instantiate depending on url path
         Url url = request.getUrl();
-        String path = url.getPath();
+        String path = url.getEntirePath();
         String className = "";
         ResponseInterface response = null;
         Cookie idCookie = null;
