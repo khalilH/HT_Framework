@@ -95,5 +95,10 @@ public class Request implements RequestInterface{
     @Override
     public String getIp(){ return ip; }
 
+    @Override
+    public void setCookies(List<Cookie> cookies) {
+        this.cookies = cookies;
+    }
+
 
 }

@@ -17,7 +17,8 @@ public class SessionTable {
 
     public static SessionInterface getUserSession(String uniqueId) {
         SessionInterface session = sessionMap.get(uniqueId);
-        session.updateLastAccess();
+        if (session != null)
+            session.updateLastAccess();
         return session;
     }
 

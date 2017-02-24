@@ -58,6 +58,9 @@ public class Response implements ResponseInterface{
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             response += entry.getKey() + ": "+entry.getValue()+System.lineSeparator();
         }
+        for (Cookie c : cookies) {
+            response += c.toString()+System.lineSeparator();
+        }
         response += System.lineSeparator();
         response += getBody()+System.lineSeparator();
         return response;

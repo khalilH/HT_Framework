@@ -28,4 +28,9 @@ public class Cookie {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public String toString() {
+        return Headers.SET_COOKIE+":"+" "+getKey()+"="+getValue();
+
+    }
 }

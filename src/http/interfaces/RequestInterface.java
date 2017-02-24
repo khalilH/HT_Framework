@@ -24,6 +24,7 @@ public interface RequestInterface {
     void setUniqueId(String uniqueId);
     String getUniqueId();
     String getIp();
+    void setCookies(List<Cookie> cookies);
 
 
 }

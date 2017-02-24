@@ -46,7 +46,7 @@ public class HttpServer extends AbstractServer {
         Cookie tmpCookie = null;
         String uniqueId = null;
         for(Cookie cookie : request.getCookies()) {
-            if(cookie.getKey() == CookieTable.UNIQUE_ID) {
+            if(cookie.getKey().equals(CookieTable.UNIQUE_ID)) {
                 hasUniqueIdCookie = true;
                 uniqueId = cookie.getValue();
                 break;
@@ -55,42 +55,6 @@ public class HttpServer extends AbstractServer {
 
         List<Cookie> userCookies;
         SessionInterface session = null;
-
-        // Associating the cookies to the userUniqueId if needed
-        if(hasUniqueIdCookie) {
-            if(CookieTable.cookieMap.containsKey(tmpCookie.getValue())){
-
-                Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
-                if(privateCookie.getValue().equals(userHash)) {
-                    SessionInterface _session = SessionTable.getUserSession(uniqueId);
-                    if (session.isAlive()) {
-                        session = _session;
-                    }
-                }else{
-                    System.out.println("Fucking hacker, emptying cookie list");
-                    idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
-                    Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
-                    List<Cookie> cookieList = new ArrayList<>();
-                    cookieList.add(0,hashCookie);
-                    CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
-                }
-
-            }else{
-                System.out.println("Fucking noob hacker, emptying cookie list");
-                idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
-                Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
-                List<Cookie> cookieList = new ArrayList<>();
-                cookieList.add(0,hashCookie);
-                CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
-            }
-        } else {
-            idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
-            Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
-            List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
-            requestCookiesClone.add(0,hashCookie);
-            CookieTable.addCookiesToUser(idCookie.getValue(), requestCookiesClone);
-        }
-
 
         for(String pattern : router.getPatterns()){
             if(Pattern.matches(pattern, path))
@@ -102,6 +66,45 @@ public class HttpServer extends AbstractServer {
             response = new Response();
             response.setStatusCode(StatusCode.OK);
         } else {
+
+            // Associating the cookies to the userUniqueId if needed
+
+            if(hasUniqueIdCookie) {
+                System.out.println("Cookie envoye par le client");
+                if(CookieTable.cookieMap.containsKey(uniqueId)){
+
+                    Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
+                    if(privateCookie.getValue().equals(userHash)) {
+                        SessionInterface _session = SessionTable.getUserSession(uniqueId);
+                        if (session.isAlive()) {
+                            session = _session;
+                        }
+                    }else{
+                        System.out.println("Fucking hacker, emptying cookie list");
+                        idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+                        Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+                        List<Cookie> cookieList = new ArrayList<>();
+                        cookieList.add(0,hashCookie);
+                        CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
+                    }
+
+                }else{
+                    System.out.println("Fucking noob hacker, emptying cookie list");
+                    idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+                    Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+                    List<Cookie> cookieList = new ArrayList<>();
+                    cookieList.add(0,hashCookie);
+                    CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
+                }
+            } else {
+                System.out.println("le client n'a pas envoye de cookie");
+                idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
+                Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
+                List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
+                requestCookiesClone.add(0,hashCookie);
+                CookieTable.addCookiesToUser(idCookie.getValue(), requestCookiesClone);
+            }
+
             // Instantiating
             try {
                 Class methodClass = Class.forName(className);

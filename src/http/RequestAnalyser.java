@@ -36,7 +36,7 @@ public class RequestAnalyser {
             line = scanner.nextLine();
             tab = line.split(": ");
             if (tab.length == 2) {
-                if(tab[0].equals(Headers.SET_COOKIE)){
+                if(tab[0].equals(Headers.COOKIE)){
                     String[] tmp = tab[1].split("=");
                     cookies.add(new Cookie(tmp[0],tmp[1]));
                 }else {
@@ -55,7 +55,9 @@ public class RequestAnalyser {
         // Getting the URL
         url.setHost(headers.get(Headers.HOST));
 
+
         res = new Request(url, method, headers, cookies);
+        res.setCookies(cookies);
         if (body.length() > 0)
             res.setBody(body);
 
