@@ -8,23 +8,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * interface representant un objet request HTTP
  */
 public interface RequestInterface {
-    Url getUrl();
-    Method getMethod();
-    Map<String, String> getHeaders();
+
+    // GETTERS
+    String getBody();
+    String getCookie(String key);
     List<Cookie> getCookies();
     String getHeader(String header);
-    String getBody();
-    void setBody(String body);
-    String getCookie(String key);
+    Map<String, String> getHeaders();
+    String getIp();
+    Method getMethod();
     String getParameter(String param);
+    String getUniqueId();
+    Url getUrl();
+
+    // SETTERS
+    void setBody(String body);
+    void setCookies(List<Cookie> cookies);
     void setIp(String ip);
     void setUniqueId(String uniqueId);
-    String getUniqueId();
-    String getIp();
-    void setCookies(List<Cookie> cookies);
 
 
 }

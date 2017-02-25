@@ -1,6 +1,8 @@
 package http;
 
-
+/**
+ * Entetes du protocole HTTP
+ */
 public class Headers {
 
     // Pour la gestion du Content-Type, il faudra gerer le cas ou on recoit

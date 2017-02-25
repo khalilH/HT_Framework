@@ -6,28 +6,50 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by ladislas on 21/02/2017.
+ * Classe contenant la table des Cookies
  */
 public class CookieTable {
 
+    /**
+     * Liste d'association (cle, valeur) contenant les listes de cookies des utilisateurs
+     * La cle est l'identifiant unique d'un utilisateur (qui est le cookie envoye au client)
+     * La valeur est la liste des cookies associee a un utilisateur
+     * Dans la liste de cookie, le premier cookie est toujour le cookie privee : cookie contenant
+     * la valeur hachee de l'IP et du User Agent d'un utilisateur
+     * Ce coookie prive n'est jamais envoye a un client
+     */
     public static Map<String, List<Cookie>> cookieMap;
-    //    in List<Cookie>, the first element is always the private cookie (userHash, userHashValue)
+
     public static String UNIQUE_ID = "uniqueId";
     public static String USER_HASH = "userHash";
 
     static {
-        System.out.println("CREATION DE LA TABLE DE COOKIES");
         cookieMap = new HashMap<>();
     }
 
-    public static List<Cookie> getUserCookies(String userHash) {
-        return cookieMap.get(userHash);
+    /**
+     * Permet d'obtenir la liste de cookies d'un utilisateur
+     * @param userUniqueId l'identifiant unique d'un utlisateur
+     * @return une liste de cookies
+     */
+    public static List<Cookie> getUserCookies(String userUniqueId) {
+        return cookieMap.get(userUniqueId);
     }
 
+    /**
+     * Permet d'ajouter la liste de cookies d'un utilisateur a la Table des cookies
+     * @param userUniqueId l'identifiant unique d'un utilsateur
+     * @param cookies la liste de cookies de l'utilisateur
+     */
     public static void addCookiesToUser(String userUniqueId, List<Cookie> cookies){
         cookieMap.put(userUniqueId, cookies);
     }
 
+    /**
+     * permet de hacher une chaine de caractere avec l'algorithme SHA-256
+     * @param base la chaine de caractere a hacher
+     * @return le hachage de la chaine de caracteres par SHA-256
+     */
     public static String sha256(String base) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

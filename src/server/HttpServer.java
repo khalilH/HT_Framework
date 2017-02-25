@@ -19,12 +19,24 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
- * Vrai serveur http qui fait le router puis execute la methode a appeler
+ * Serveur HTTP
  */
 public class HttpServer extends AbstractServer {
 
+    /**
+     * Routeur de requete
+     */
     private Router router;
 
+    /**
+     * Constructeur du serveur HTTP, analyse syntaxiquement les fichier *.xml
+     * pour initialiser le routage des requetes HTTP
+     * @param port le port sur lequel ecoute le serveur
+     * @throws MapperFileException si aucun fichier de mapping n'est presebt
+     * @throws IOException
+     * @throws SAXException
+     * @throws ParserConfigurationException
+     */
     public HttpServer(int port) throws MapperFileException, IOException, SAXException, ParserConfigurationException {
         super(port);
         router = new Router();
@@ -32,19 +44,27 @@ public class HttpServer extends AbstractServer {
         router.route();
     }
 
+    /**
+     * Methode de traitement d'une requete HTTP
+     *
+     * @param request la requete a traiter
+     * @return la reponse de la requete
+     */
     @Override
     public ResponseInterface handleRequest(RequestInterface request) {
-        // Getting the class to instantiate depending on url path
+
+        // Recuperation du chemin de la requete
         Url url = request.getUrl();
         String path = url.getEntirePath();
-        String className = "";
         ResponseInterface response = null;
-        Cookie idCookie = null;
 
         // Saving the cookies
         String userHash = CookieTable.sha256(request.getIp()+request.getHeader(Headers.USER_AGENT));
         boolean hasUniqueIdCookie = false;
         String uniqueId = null;
+        Cookie idCookie = null;
+
+        // Recherche d'un cookie d'identification unique dans la requete
         for(Cookie cookie : request.getCookies()) {
             if(cookie.getKey().equals(CookieTable.UNIQUE_ID)) {
                 hasUniqueIdCookie = true;
@@ -57,33 +77,38 @@ public class HttpServer extends AbstractServer {
         List<Cookie> userCookies;
         SessionInterface session = null;
 
+        // Recherche de la classe service en fonction du chemin de la requete
+        String className = "";
         for(String pattern : router.getPatterns()){
             if(Pattern.matches(pattern, path))
                 className = router.getMapping(pattern);
         }
 
-        // Gestion favicon.ico
+        // Gestion favicon.ico : requete ignoree pour le moment
         if (path.equals("/favicon.ico")) {
             response = new Response();
             response.setStatusCode(StatusCode.OK);
         } else {
 
-            // Associating the cookies to the userUniqueId if needed
-
+            // Gestion cookie + session
             if(hasUniqueIdCookie) {
-                System.out.println("Cookie envoye par le client");
                 if(CookieTable.cookieMap.containsKey(uniqueId)){
-
                     Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
-                    System.out.println("private cookie = "+privateCookie.toString());
                     if(privateCookie.getValue().equals(userHash)) {
-                        System.out.println("Sending your sessoin");
+                        // On verifie que le cookie envoye par l'utilisateur correspond bien a
+                        // la valeur hachee de son IP et son User-agent
+
+                        // Recuperation de sa session a partir de son identifiant unique
                         SessionInterface _session = SessionTable.getUserSession(uniqueId);
+
+                        // Si la session n'a pas expiree on l'a recupere
                         if (_session != null && _session.isAlive()) {
                             session = _session;
                         }
                     }else{
-                        System.out.println("Fucking hacker, emptying cookie list");
+                        // Le cookie envoye ne correspond pas a la valeur hachee de l'IP et du user-agent
+                        // on genere donc un nouveau cookie a l'utilisateur sans recuperer la session
+                        // associee au cookie qu'il nous avait envoye
                         idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                         Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                         List<Cookie> cookieList = new ArrayList<>();
@@ -92,15 +117,18 @@ public class HttpServer extends AbstractServer {
                     }
 
                 }else{
-                    System.out.println("Fucking noob hacker, emptying cookie list");
+                    // Le cookie envoye n'est pas present dans la table de cookie
+                    // on genere donc un nouveau cookie a l'utilisateur
                     idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
-                    Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                     List<Cookie> cookieList = new ArrayList<>();
+                    Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                     cookieList.add(0,hashCookie);
                     CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
                 }
             } else {
-                System.out.println("le client n'a pas envoye de cookie avec son idUnique");
+                // Le client n'a pas envoye de cookie avec son identifiant unique,
+                // On lui en cree donc un, et on cree son cookie prive qui permettra de verfier
+                // a chaque utilisation qu'il ne s'agit pas d'une usurpation
                 idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                 Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                 List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
@@ -108,7 +136,7 @@ public class HttpServer extends AbstractServer {
                 CookieTable.addCookiesToUser(idCookie.getValue(), requestCookiesClone);
             }
 
-            // Instantiating
+            // Instanciation de la classe service
             try {
                 Class methodClass = Class.forName(className);
                 Object classInstance = methodClass.newInstance();
@@ -166,6 +194,7 @@ public class HttpServer extends AbstractServer {
                 }
             }
         }
+        // Envoie du cookie de session au client
         if (idCookie != null) {
             response.addCookie(idCookie);
         }

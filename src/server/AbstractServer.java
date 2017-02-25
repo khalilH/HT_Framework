@@ -1,28 +1,40 @@
 package server;
 
-import exception.MapperFileException;
 import http.Headers;
 import http.RequestAnalyser;
 import http.StatusCode;
 import http.interfaces.RequestInterface;
 import http.interfaces.ResponseInterface;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe abstraite d'un serveur generique qui ecoute sur un port donne
+ * et effectue la boucle suivante
+ * lecture et analyse syntaxique de la requete
+ * traitement de la requete
+ * envoie de la reponse au client
+ */
 public abstract class AbstractServer implements ServerInterface{
 
+    /**
+     * Port sur lequel ecoute le serveur
+     */
     protected int port;
+    /**
+     * Socket du serveur
+     */
     protected ServerSocket serverSocket;
+    /**
+     * Liste des sockets clientes
+     */
     protected List<Socket> clientSockets;
 
     public AbstractServer(int port) {
@@ -31,8 +43,19 @@ public abstract class AbstractServer implements ServerInterface{
         clientSockets = new ArrayList<>();
     }
 
+    /**
+     * Methode abstraite du traitement d'une requete
+     * @param request la requete a traiter
+     * @return un objet ResponseInterface
+     */
     public abstract ResponseInterface handleRequest(RequestInterface request);
 
+    /**
+     * Methode demarrant l'ecoute du serveur sur son port.
+     * Boucle de lecture de la requete / traitement de la requete / ecriture de
+     * la reponse au client
+     * @throws IOException
+     */
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Listening on port "+port+"...");
@@ -104,6 +127,10 @@ public abstract class AbstractServer implements ServerInterface{
         }
     }
 
+    /**
+     * Permet d'arreter le serveur
+     * @throws IOException
+     */
     public void shutdown() throws IOException {
         serverSocket.close();
     }

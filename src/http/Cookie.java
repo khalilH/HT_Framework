@@ -1,11 +1,18 @@
 package http;
 
 /**
- * Created by patrick.tran on 07/02/2017.
+ * Classe representant un objet Cookie
  */
 public class Cookie {
 
+    /**
+     * Cle du cookie
+     */
     private String key;
+
+    /**
+     * Valeur du cookie
+     */
     private String value;
 
     public Cookie(String key, String value) {
@@ -29,6 +36,10 @@ public class Cookie {
         this.value = value;
     }
 
+    /**
+     * @return Retoune la chaine de caractere representant un cookie envoye par
+     * le serveur a un client
+     */
     public String toString() {
         return Headers.SET_COOKIE+":"+" "+getKey()+"="+getValue();
 

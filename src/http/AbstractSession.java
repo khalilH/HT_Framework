@@ -5,9 +5,12 @@ import http.interfaces.SessionInterface;
 import java.util.Date;
 
 /**
- * Created by ladislas on 21/02/2017.
+ * Classe abstraite de l'objet session
  */
 public abstract class AbstractSession implements SessionInterface{
+    /**
+     * timestamp du dernier acces a l'objet
+     */
     protected long lastAccess;
 
     public AbstractSession() {
@@ -17,7 +20,7 @@ public abstract class AbstractSession implements SessionInterface{
 
     /**
      * Permet de verifier si un objet session a expire
-     * @return duree de vie de la session depasse 1h
+     * @return true si duree de vie de la session depasse 1h
      */
     @Override
     public final boolean isAlive() {
@@ -27,7 +30,7 @@ public abstract class AbstractSession implements SessionInterface{
     }
 
     /**
-     * Permet de mettre a jour la derniere date d'acces de la session
+     * Permet de mettre a jour la date de dernier acces a l'objet session
      */
     @Override
     public final void updateLastAccess() {

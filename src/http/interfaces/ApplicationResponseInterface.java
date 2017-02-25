@@ -1,9 +1,11 @@
 package http.interfaces;
 
 /**
- * Created by Khalil on 25/02/2017.
+ * interface representant un objet reponse permettant l'acces et la modification
+ * du corps de la reponse et son content-Type
  */
 public interface ApplicationResponseInterface {
+
 
     void setBody(Object body);
     Object getBody();

@@ -3,7 +3,7 @@ package http.interfaces;
 import http.Cookie;
 
 /**
- * Created by patrick.tran on 07/02/2017.
+ * interface representant un objet response HTTP
  */
 public interface ResponseInterface {
     void addHeader(String fieldName, String value);
