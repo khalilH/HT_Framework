@@ -9,10 +9,25 @@ import java.util.Map;
 public class Url {
 
     private String host;
+
+    /**
+     * Chemin de la ressource demandee
+     */
+
     private String path;
+
+    /**
+     * Lien absolu
+     */
     private String entirePath;
+
     private Map<String, String> arguments;
 
+
+    /**
+     * Permet de recuperer les differentes parties d'une URL
+     * @param pathString l'URL a parser
+     */
     public void parseUrl(String pathString){
         String[] pathWithoutFragment = pathString.split("#");
         entirePath = pathWithoutFragment[0];

@@ -1,12 +1,13 @@
 package http;
 
 import http.interfaces.ResponseInterface;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Classe representant une reponse HTTP
+ */
 public class Response implements ResponseInterface{
 
     public Response() {
@@ -14,9 +15,24 @@ public class Response implements ResponseInterface{
         cookies = new ArrayList<>();
     }
 
+    /**
+     * Code statut de la reponse
+     */
     private int statusCode;
+
+    /**
+     * Table contenant dans laquelle la valeur d'un headers est associee a sa cle
+     */
     private Map<String, String> headers;
+
+    /**
+     * Liste des cookies contenus dans la reponse
+     */
     private List<Cookie> cookies;
+
+    /**
+     * Corps de la reponse
+     */
     private Object body;
 
     @Override
@@ -39,9 +55,6 @@ public class Response implements ResponseInterface{
 
     public void setHeaders(Map<String, String> headers) { this.headers = headers; }
 
-
-
-
     public void setBody(Object body) {
         this.body = body;
         addHeader(Headers.CONTENT_LENGTH, getBody().toString().length()+"");
@@ -50,6 +63,9 @@ public class Response implements ResponseInterface{
     @Override
     public Object getBody(){ return this.body; }
 
+    /**
+     * @return Renvoie la chaine de caracteres correspondant a la reponse sous la forme conventionnelle HTTP
+     */
     @Override
     public String toString() {
         String response = "HTTP/1.1 "+getStatusCode()+" "+StatusCode.getDescription(getStatusCode())+System.lineSeparator();

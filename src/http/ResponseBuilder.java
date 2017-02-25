@@ -3,10 +3,13 @@ package http;
 /**
  * Created by ladislas on 21/02/2017.
  */
+
+/**
+ * Permet de renvoyer des reponses toutes faites
+ */
 public class ResponseBuilder {
 
 //    public static Response internalServerError(int statusCode, String templateFileName, string path)
-
 
     public static Response serverResponse(int statusCode) {
         Response response = new Response();
