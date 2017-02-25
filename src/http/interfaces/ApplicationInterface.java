@@ -10,16 +10,16 @@ public interface ApplicationInterface {
 
     //Retourner directement la reponse/template d'erreur ??
 
-    default Object doGet(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+    default ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.GET.toString());
     };
-    default Object doPost(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+    default ApplicationResponseInterface doPost(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.POST.toString());
     };
-    default Object doPut(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+    default ApplicationResponseInterface doPut(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.PUT.toString());
     };
-    default Object doDelete(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+    default ApplicationResponseInterface doDelete(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.DELETE.toString());
     };
 

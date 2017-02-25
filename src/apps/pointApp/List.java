@@ -1,6 +1,8 @@
 package apps.pointApp;
 
+import http.ApplicationResponse;
 import http.interfaces.ApplicationInterface;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
 
@@ -25,8 +27,10 @@ public class List implements ApplicationInterface{
     }
 
     @Override
-    public Object doGet(RequestInterface request, SessionInterface session) {
-        return points.keySet();
+    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
+        ApplicationResponseInterface response = new ApplicationResponse();
+        response.setBody(points.keySet());
+        return response;
 
     }
 }

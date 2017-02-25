@@ -16,6 +16,7 @@ public class CookieTable {
     public static String USER_HASH = "userHash";
 
     static {
+        System.out.println("CREATION DE LA TABLE DE COOKIES");
         cookieMap = new HashMap<>();
     }
 

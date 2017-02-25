@@ -1,6 +1,7 @@
 package server;
 
 import exception.MapperFileException;
+import http.Headers;
 import http.RequestAnalyser;
 import http.StatusCode;
 import http.interfaces.RequestInterface;
@@ -34,7 +35,7 @@ public abstract class AbstractServer implements ServerInterface{
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
-        System.out.println("Listening on "+port+"...");
+        System.out.println("Listening on port "+port+"...");
         while (true) {
             clientSockets.add(serverSocket.accept());
             System.out.print("Connection opened from ");
@@ -42,21 +43,24 @@ public abstract class AbstractServer implements ServerInterface{
                 @Override
                 public void run() {
                     try {
+                        // Recuperation de l'adresse IP
                         Socket clientSocket = clientSockets.remove(0);
-
-                        InetAddress ia = clientSocket.getInetAddress();
                         String _ip = clientSocket.getRemoteSocketAddress().toString();
                         String[] tab = _ip.split(":");
                         String ip = tab[0].substring(1);
                         System.out.println(ip);
+
+                        // Ouverture des flux
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         String inputLine, httpRequestText = "";
                         boolean hasBody = false, isReadingBody = false;
                         int contentLength = 0;
+
+                        //Lecture de requete HTTP
                         inputLine = in.readLine();
                         while (!inputLine.equals("") || (inputLine.equals("") && hasBody == true)) {
-                            if(inputLine.contains("Content-Length:")) {
+                            if(inputLine.contains(Headers.CONTENT_LENGTH)) {
                                 hasBody = true;
                                 contentLength = Integer.parseInt(inputLine.split(": ")[1]);
                             }
@@ -78,9 +82,14 @@ public abstract class AbstractServer implements ServerInterface{
                         }
                         System.out.println("=============");
                         System.out.println(httpRequestText);
+
+                        // Analyse syntaxique de la requete HTTP
                         RequestInterface request = RequestAnalyser.analyse(httpRequestText);
                         request.setIp(ip);
+
+                        // Traitement de la requete HTTP
                         ResponseInterface response = handleRequest(request);
+
                         out.println(response.toString());
                         out.close();
                         in.close();

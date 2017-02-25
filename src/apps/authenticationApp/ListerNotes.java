@@ -1,12 +1,10 @@
 package apps.authenticationApp;
 
-import http.SessionManager;
+import http.ApplicationResponse;
 import http.interfaces.ApplicationInterface;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ladislas on 21/02/2017.
@@ -14,17 +12,20 @@ import java.util.List;
 public class ListerNotes implements ApplicationInterface {
 
     @Override
-    public Object doGet(RequestInterface request, SessionInterface session) {
+    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
+        ApplicationResponseInterface response = new ApplicationResponse();
         Session s;
         if (session == null) {
-            return "Vous n'avez pas de notes";
+            response.setBody("Vous n'avez pas de notes");
+            return response;
         } else {
             s = (Session) session;
             String ret = "";
             for(String note : s.getNotes()) {
-                ret += note+"<br>";
+                ret += note+"<br/>";
             }
-            return ret;
+            response.setBody("Vous n'avez pas de notes");
+            return response;
         }
     }
 

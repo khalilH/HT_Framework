@@ -1,7 +1,8 @@
 package apps.pointApp;
 
-import http.Url;
+import http.ApplicationResponse;
 import http.interfaces.ApplicationInterface;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
 
@@ -13,7 +14,8 @@ import java.awt.Point;
 public class PointId2 implements ApplicationInterface {
 
     @Override
-    public Object doPut(RequestInterface request, SessionInterface session) {
+    public ApplicationResponseInterface doPut(RequestInterface request, SessionInterface session) {
+        ApplicationResponseInterface response = new ApplicationResponse();
         String[] tab = request.getUrl().getPath().split("/");
         int id = Integer.parseInt(tab[2]);
         String xx = request.getParameter("x");
@@ -36,23 +38,29 @@ public class PointId2 implements ApplicationInterface {
             if (List.points.containsKey(id)) {
                 List.points.put(id, new Point(x,y));
                 String ret = change ? "true" : "false";
-                return ret;
+                response.setBody("true");
+                return response;
             } else {
-                return "false";
+                response.setBody("false");
+                return response;
             }
         }
         // mieux gerer les erreur avec des exception et les codes erreurs http
-        return "Point "+id+" does not exists";
+        response.setBody("Point "+id+" does not exists");
+        return response;
     }
 
     @Override
-    public Object doDelete(RequestInterface request, SessionInterface session) {
+    public ApplicationResponseInterface doDelete(RequestInterface request, SessionInterface session) {
+        ApplicationResponseInterface response = new ApplicationResponse();
         String[] tab = request.getUrl().getPath().split("/");
         int id = Integer.parseInt(tab[2]);
         if (List.points.containsKey(id)) {
-            return List.points.remove(id);
+            response.setBody(List.points.remove(id));
+            return response;
         } else {
-            return "false";
+            response.setBody("false");
+            return response;
         }
     }
 

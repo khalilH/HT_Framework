@@ -23,7 +23,4 @@ public class Session extends AbstractSession {
         return notes;
     }
 
-    public void setNotes(List<String> notes) {
-        this.notes = notes;
-    }
 }

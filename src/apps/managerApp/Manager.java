@@ -1,6 +1,8 @@
 package apps.managerApp;
 
+import http.ApplicationResponse;
 import http.interfaces.ApplicationInterface;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
 
@@ -12,8 +14,10 @@ import http.interfaces.SessionInterface;
 public class Manager implements ApplicationInterface {
 
     @Override
-    public Object doGet(RequestInterface request, SessionInterface session) {
+    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
         String body = "Halitran Framework v1.0";
-        return body;
+        ApplicationResponseInterface response = new ApplicationResponse();
+        response.setBody(body);
+        return response;
     }
 }

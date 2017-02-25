@@ -1,7 +1,9 @@
 package apps.authenticationApp;
 
+import http.ApplicationResponse;
 import http.SessionManager;
 import http.interfaces.ApplicationInterface;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
 
@@ -10,8 +12,9 @@ import http.interfaces.SessionInterface;
  */
 public class SauverNote implements ApplicationInterface {
     @Override
-    public Object doGet(RequestInterface request, SessionInterface session) {
+    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
         Session s;
+        ApplicationResponseInterface response = new ApplicationResponse();
         String note = request.getParameter("note");
             if (session == null) {
                 s = new Session();
@@ -22,6 +25,7 @@ public class SauverNote implements ApplicationInterface {
                 s.getNotes().add(note);
                 SessionManager.save(request.getUniqueId(), s);
             }
-            return s.getNotes().size()+"";
+        response.setBody(s.getNotes().size()+"");
+        return response;
     }
 }

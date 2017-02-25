@@ -3,6 +3,7 @@ package server;
 import exception.MapperFileException;
 import exception.MethodNotAllowedException;
 import http.*;
+import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
 import http.interfaces.ResponseInterface;
 import http.interfaces.SessionInterface;
@@ -18,7 +19,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
- * Vrai serveur http qui fait le router puis exeucte la methode a appeler
+ * Vrai serveur http qui fait le router puis execute la methode a appeler
  */
 public class HttpServer extends AbstractServer {
 
@@ -43,12 +44,12 @@ public class HttpServer extends AbstractServer {
         // Saving the cookies
         String userHash = CookieTable.sha256(request.getIp()+request.getHeader(Headers.USER_AGENT));
         boolean hasUniqueIdCookie = false;
-        Cookie tmpCookie = null;
         String uniqueId = null;
         for(Cookie cookie : request.getCookies()) {
             if(cookie.getKey().equals(CookieTable.UNIQUE_ID)) {
                 hasUniqueIdCookie = true;
                 uniqueId = cookie.getValue();
+                request.setUniqueId(uniqueId);
                 break;
             }
         }
@@ -74,9 +75,11 @@ public class HttpServer extends AbstractServer {
                 if(CookieTable.cookieMap.containsKey(uniqueId)){
 
                     Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
+                    System.out.println("private cookie = "+privateCookie.toString());
                     if(privateCookie.getValue().equals(userHash)) {
+                        System.out.println("Sending your sessoin");
                         SessionInterface _session = SessionTable.getUserSession(uniqueId);
-                        if (session.isAlive()) {
+                        if (_session != null && _session.isAlive()) {
                             session = _session;
                         }
                     }else{
@@ -97,7 +100,7 @@ public class HttpServer extends AbstractServer {
                     CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
                 }
             } else {
-                System.out.println("le client n'a pas envoye de cookie");
+                System.out.println("le client n'a pas envoye de cookie avec son idUnique");
                 idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                 Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                 List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
@@ -127,11 +130,12 @@ public class HttpServer extends AbstractServer {
 
                 Method method = methodClass.getMethod(methodName, RequestInterface.class, SessionInterface.class);
 
-                Object body = method.invoke(classInstance, request, session);
+                ApplicationResponseInterface applicationResponse =
+                        (ApplicationResponseInterface) method.invoke(classInstance, request, session);
                 response = new Response();
                 response.setStatusCode(StatusCode.OK);
-                response.setBody(body);
-                response.addHeader(Headers.CONTENT_TYPE, request.getHeader(Headers.CONTENT_TYPE));
+                response.setBody(applicationResponse.getBody());
+                response.addHeader(Headers.CONTENT_TYPE, applicationResponse.getContentType());
             } catch (ClassNotFoundException e) {
                 response = new Response();
                 response.setStatusCode(StatusCode.NOT_FOUND);
