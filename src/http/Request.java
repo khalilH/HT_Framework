@@ -6,13 +6,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe representant une requete HTTP
+ */
 public class Request implements RequestInterface{
+
+    /**
+     * Lien absolu de la requete
+     */
     private Url url;
+
+    /**
+     * Methode HTTP utilisee
+     */
     private Method method;
+
+    /**
+     * Table contenant dans laquelle la valeur d'un headers est associee a sa cle
+     */
     private Map<String, String> headers;
+
+    /**
+     * Liste des cookies contenus dans la requete
+     */
     private List<Cookie> cookies;
+
+    /**
+     * Corps de la requete
+     */
     private String body;
+
+    /**
+     * Adresse ip du client
+     */
     private String ip;
+
+    /**
+     * Unique id du client
+     */
     private String uniqueId;
 
     public Request() {

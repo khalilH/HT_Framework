@@ -22,16 +22,33 @@ public class Router {
     private static final String CLASS = "class";
     private static final String URL_PATTERN = "url-pattern";
 
-
+    /**
+     * Table contenant la classe associee a un chemin pour acceder a une ressource
+     */
     private Map<String, String> mapping;
+
+    /**
+     * Nom du fichier de mapping
+     */
     private String xmlFilename;
+
+    /**
+     * Objet contenant le resultat du fichier de mapping parse
+     */
     private Document document;
+
     public Router() {
         mapping = new HashMap<>();
         xmlFilename = "web.xml";
         document = null;
     }
 
+    /**
+     * Permet de parser le fichier de mapping, le resultat est mis dans document
+     * @throws ParserConfigurationException lorsqu'il y a eu un probleme a la creation du parser
+     * @throws IOException lorsqu'il y a eu un probleme lors de l'analyse syntaxique
+     * @throws SAXException lorsqu'il y a eu un probleme lors de l'analyse syntaxique
+     */
     public void parseXML() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(xmlFilename);
 
@@ -45,6 +62,11 @@ public class Router {
 
     }
 
+    /**
+     * Permet d'etablir la table des routes, une fois le fichier de mapping analyse
+     * @throws NullPointerException si le fichier de mapping n'a pas ete analyse
+     * @throws MapperFileException si le fichier de mapping a des donnees dupliquees
+     */
     public void route() throws NullPointerException, MapperFileException {
         if (document == null) throw new NullPointerException("Document not parsed");
 

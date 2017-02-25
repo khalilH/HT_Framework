@@ -10,6 +10,11 @@ import java.util.Scanner;
  */
 public class RequestAnalyser {
 
+    /**
+     * Permet de parser une requete HTTP a partir d'une chaine de caracteres
+     * @param request la chaine de caracteres correspondant a une requete HTTP
+     * @return un objet Request contenant toutes les informations de la requete
+     */
     public static Request analyse(String request){
         Request res;
         Method method = null;
