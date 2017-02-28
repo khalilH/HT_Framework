@@ -10,6 +10,7 @@ import http.interfaces.SessionInterface;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 public class HttpServer extends AbstractServer {
 
     private Router router;
+    public static String errorPageTemplatePath =  "src" + File.separator + "front" + File.separator + "ErrorPageTemplate.html";
 
     public HttpServer(int port) throws MapperFileException, IOException, SAXException, ParserConfigurationException {
         super(port);
@@ -137,32 +139,28 @@ public class HttpServer extends AbstractServer {
                 response.setBody(applicationResponse.getBody());
                 response.addHeader(Headers.CONTENT_TYPE, applicationResponse.getContentType());
             } catch (ClassNotFoundException e) {
-                response = new Response();
-                response.setStatusCode(StatusCode.NOT_FOUND);
-                //TODO faire avec la template
-                response.setBody("<!DOCTYPE html><html><head><title>Halitran Framework v1.0- Rapport d''erreur</title><style type=\"text/css\">H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}.line {height: 1px; background-color: #525D76; border: none;}</style> </head><body><h1>Etat HTTP 404 - "+request.getUrl().getPath()+"</h1><div class=\"line\"></div><p><b>type</b> Rapport d''état</p><p><b>message</b> <u>"+request.getUrl().getPath()+"</u></p><p><b>description</b> <u>La ressource demandée n''est pas disponible.</u></p><hr class=\"line\"><h3>Halitran Framework v1.0</h3></body></html>");
-                response.addHeader(Headers.CONTENT_TYPE, Headers.TEXT_HTML);
-                response.addHeader(Headers.CONTENT_LENGTH, response.getBody().toString().length()+"");
+                e.printStackTrace();
+                response = ResponseBuilder.serverResponse(StatusCode.NOT_FOUND, request.getUrl().getPath());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
+                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath());
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
+                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath());
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
-                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
+                response = ResponseBuilder.serverResponse(StatusCode.NOT_IMPLEMENTED, request.getUrl().getPath());
             } catch (InvocationTargetException e) {
                 e.printStackTrace(); // TODO logs
                 if (e.getCause() instanceof MethodNotAllowedException) {
-                    response = ResponseBuilder.serverResponse(StatusCode.METHOD_NOT_ALLOWED);
+                    response = ResponseBuilder.serverResponse(StatusCode.METHOD_NOT_ALLOWED, request.getUrl().getPath());
                 } else {
                     System.out.println(e.getCause()); //TODO
                     e.printStackTrace();
                 }
             } finally {
                 if (response == null) {
-                    response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR);
+                    response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath());
                 }
             }
         }

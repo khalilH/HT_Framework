@@ -1,6 +1,8 @@
 package apps.pointApp;
 
+import exception.TemplateVariableNotFoundException;
 import http.ApplicationResponse;
+import http.TemplateLib;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
@@ -29,8 +31,20 @@ public class List implements ApplicationInterface{
     @Override
     public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
         ApplicationResponseInterface response = new ApplicationResponse();
-        response.setBody(points.keySet());
-        return response;
 
+        HashMap<String, String> env = new HashMap<>();
+        env.put("Tz1", points.get(1).toString());
+        env.put("Toz2", points.get(2).toString());
+        env.put("Toz3", points.get(3).toString());
+        String template = "<html><head></head><body><ul><li>%Toz1%</li><li>%Toz2D%</li><li>%Toz3%</li></ul></body></html>";
+        try {
+            template = TemplateLib.replaceAll(template, env);
+        } catch (TemplateVariableNotFoundException e) {
+            template = "Template not well formed.";
+            e.printStackTrace();
+        }
+
+        response.setBody(template);
+        return response;
     }
 }
