@@ -4,6 +4,9 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import exception.TemplateVariableNotFoundException;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,10 +31,10 @@ public class TemplateLib {
         return template;
     }
 
-    public static String replaceAllObject(String template, HashMap<String, Object> env) throws TemplateVariableNotFoundException {
-        Pattern pattern = Pattern.compile("%(\\w+)((\\.)?(\\w+)*)*%");
+    public static String replaceAllObject(String template, HashMap<String, Object> env) throws TemplateVariableNotFoundException, NoSuchFieldException, NoSuchMethodException {
+        Pattern pattern = Pattern.compile("%((\\w+)((\\.)(\\w+))?)%");
         Matcher matcher = pattern.matcher(template);
-        String varName, value, expr, className;
+        String varName, value = null, expr, className, getMethod, attrName;
         String[] tab;
 
         Class methodClass;
@@ -41,14 +44,22 @@ public class TemplateLib {
 
         while (matcher.find()) {
             // Exemple point1.x
-            expr = matcher.group(0);
-            tab = expr.split(".");
+            expr = matcher.group(1);
+            tab = expr.split("\\.");
             // varName = point1
             varName = tab[0];
-            // Ici on fait un for pcq on peut avoir objet.objet.attr...
             // On vérifie que les attributs existent bien
-            for(i=1; i<tab.length; i++){
+
+            if(tab.length == 1) {
+                if(env.get(varName) == null) {
+                    value = null;
+                }
+                else {
+                    value = env.get(varName).toString();
+                }
+            }else {
                 try {
+                    attrName = tab[1];
                     // Récup les fields de Point
                     className = env.get(varName).getClass().getName();
                     methodClass = Class.forName(className);
@@ -57,30 +68,37 @@ public class TemplateLib {
                     // Check si dans les fields il y a "x"
                     foundField = false;
                     for(j=0; j<classFields.length; j++){
-                        if(classFields[j].getName().equals(tab[i])){
+                        if(classFields[j].getName().equals(tab[1])){
                             foundField = true;
                             break;
                         }
                     }
 
                     if(!foundField) {
-                        // throw exception ?
+                        throw new NoSuchFieldException("Field "+ tab[1] + " not found in " + className + ".");
                     }
 
-                    //Reattribuer a className la classe du field en question pour itérer dessus si besoin
+                    getMethod = "get"+attrName.toUpperCase().charAt(0)+attrName.substring(1);
+                    Method method = methodClass.getMethod(getMethod);
+                    Object classInstance = env.get(varName);
+                    value = method.invoke(classInstance) + "";
+
 
                 } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
 
-            // Remplacer par varName.getX (cela suppose que les getters et setters sont tous définis)
-
-            value = env.get(varName).toString();
             if (value == null)
                 throw new TemplateVariableNotFoundException("Variable name not found in environment");
-            template = template.replace("%" + varName + "%", value);
+            template = template.replace("%" + expr + "%", value);
+
         }
+
         return template;
     }
 

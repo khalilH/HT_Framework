@@ -32,18 +32,23 @@ public class List implements ApplicationInterface{
     public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
         ApplicationResponseInterface response = new ApplicationResponse();
 
-        HashMap<String, String> env = new HashMap<>();
+        HashMap<String, Object> env = new HashMap<>();
+        Point toz = new Point(7,7);
         env.put("Tz1", points.get(1).toString());
         env.put("Toz2", points.get(2).toString());
         env.put("Toz3", points.get(3).toString());
-        String template = "<html><head></head><body><ul><li>%Toz1%</li><li>%Toz2D%</li><li>%Toz3%</li></ul></body></html>";
+        env.put("toz", toz);
+        String template = "<html><head></head><body><ul><li>%toz.x%</li><li>%Toz2%</li><li>%Toz3%</li></ul></body></html>";
         try {
-            template = TemplateLib.replaceAll(template, env);
+            template = TemplateLib.replaceAllObject(template, env);
         } catch (TemplateVariableNotFoundException e) {
             template = "Template not well formed.";
             e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            template = e.toString();
+        } catch (NoSuchMethodException e) {
+            template = e.toString();
         }
-
         response.setBody(template);
         return response;
     }
