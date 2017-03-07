@@ -49,6 +49,37 @@ public class Login implements ApplicationInterface {
         return response;
     }
 
+//    @Override
+//    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
+//        ApplicationResponseInterface response = new ApplicationResponse();
+//        try {
+//
+//            String login, password, reqBody;
+//            Session s;
+//            JSONObject loginRes = null;
+//            if (session == null) {
+//                loginRes = UserServices.login(request.getParameter("login"), request.getParameter("password"));
+//                int id = loginRes.getInt("repsonse"); //TODO mettre constante ou faire attention
+//                if (id != -1) {
+//                    s = new Session();
+//                    s.setId(id);
+//                    SessionManager.save(request.getUniqueId(), s);
+//                }
+//            }
+//            else {
+//                s = (Session) session;
+//                loginRes = new JSONObject();
+//                loginRes.put("repsonse", s.getId());
+//            }
+//            response.setBody(loginRes);
+//            response.setContentType(Headers.APPLICATION_JSON);
+//        } catch (JSONException e) {
+//            response.setBody(ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath()));
+//            response.setContentType(Headers.TEXT_HTML);
+//            e.printStackTrace();
+//        }
+//        return response;
+//    }
 
 
 }

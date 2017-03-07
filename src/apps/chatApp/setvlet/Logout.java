@@ -31,6 +31,7 @@ public class Logout implements ApplicationInterface {
             else {
                 s = (Session) session;
                 SessionManager.delete(request.getUniqueId());
+                logoutRes = new JSONObject();
                 logoutRes.put("repsonse", "Deconnexion");
             }
             response.setBody(logoutRes);
