@@ -48,6 +48,24 @@
         <url-pattern>/notes/add\?note=\w+</url-pattern>
     </mapping>
 
+    <mapping>
+        <name>Inscription</name>
+        <class>apps.chatApp.setvlet.Signup</class>
+        <url-pattern>/chat/signup</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>Login</name>
+        <class>apps.chatApp.setvlet.Login</class>
+        <url-pattern>/chat/login</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>Login</name>
+        <class>apps.chatApp.setvlet.Logout</class>
+        <url-pattern>/chat/logout</url-pattern>
+    </mapping>
+
     <!-- forcer l'utilisateur a mettre les bons pattern s'il attend des parametres dans l'url, s'il
      n'ecrit pas la regex dans le bon format tant pis pour lui -->
 

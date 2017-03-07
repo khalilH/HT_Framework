@@ -40,4 +40,12 @@ public class SessionTable {
         session.updateLastAccess();
         sessionMap.put(uniqueId, session);
     }
+
+    /**
+     * Permet de supprimer une session
+     * @param uniqueId l'identifiant unique associe a un utilisateur d'une application
+     */
+    public static void deleteSession(String uniqueId) {
+        sessionMap.remove(uniqueId);
+    }
 }

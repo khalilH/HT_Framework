@@ -20,4 +20,8 @@ public class SessionManager {
         SessionTable.saveSession(uniqueId, session);
     }
 
+    public static void delete(String uniqueId) {
+        SessionTable.deleteSession(uniqueId);
+    }
+
 }

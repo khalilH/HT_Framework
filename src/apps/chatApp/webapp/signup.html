@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>signup</title>
+
+</head>
+<body>
+  <script>
+
+  function signup() {
+    var form = document.getElementById('myform');
+    var login = form.username.value;
+    var pwd = form.password.value;
+    var req = new XMLHttpRequest();
+    req.open("POST", 'http://localhost/chat/signup', true);
+    req.onreadystatechange = function(evt) {
+      if (req.readyState == 4) {
+        if(req.status == 200)
+        console.log("signup response : "+req.responseText);
+        else
+        console.error("error");
+      }
+    }
+    var data = {};
+    data.login = login;
+    data.password = pwd;
+    console.log("signing up with "+JSON.stringify(data));
+    req.send (data);
+  }
+
+  function login() {
+    var form = document.getElementById('myform');
+    var login = form.username.value;
+    var pwd = form.password.value;
+    var req = new XMLHttpRequest();
+    req.open("POST", '127.0.0.1/chat/login');
+    req.onreadystatechange = function(evt) {
+      if (req.readyState == 4) {
+        if(req.status == 200)
+        console.log("login response : "+req.responseText);
+        else
+        console.error("error");
+      }
+    }
+    var data = {};
+    data.login = login;
+    data.password = pwd;
+    console.log("signing up with "+JSON.stringify(data));
+    req.send (data);
+
+  }
+
+  function logout() {
+    var req = new XMLHttpRequest();
+    req.open("POST", '127.0.0.1/chat/logout');
+    req.onreadystatechange = function(evt) {
+      if (req.readyState == 4) {
+        if(req.status == 200)
+        console.log("logout response : "+req.responseText);
+        else
+        console.error("error");
+      }
+    }
+    req.send();
+  }
+
+
+  </script>
+  <div id="main">
+
+    <div>
+      <form id="myform" >
+        <input type="text" name="username"/>
+        <input type="password" name="password"/>
+      </form>
+      <button id="signup" onclick="signup()">Signup</button>
+      <button id="login" onclick="login()">Login</button>
+      <button id="logout" onclick="logout()">Logout</button>
+    </div>
+
+  </div>
+</body>
+</html>

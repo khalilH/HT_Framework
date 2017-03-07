@@ -1,6 +1,7 @@
 package apps.authenticationApp;
 
 import http.ApplicationResponse;
+import http.Headers;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.ApplicationResponseInterface;
 import http.interfaces.RequestInterface;
@@ -24,7 +25,8 @@ public class ListerNotes implements ApplicationInterface {
             for(String note : s.getNotes()) {
                 ret += note+"<br/>";
             }
-            response.setBody("Vous n'avez pas de notes");
+            response.setBody(ret);
+            response.setContentType(Headers.TEXT_HTML);
             return response;
         }
     }
