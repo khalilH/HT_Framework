@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routing>
+
+
+    <mapping>
+        <name>htmlManager</name>
+        <class>apps.managerApp.HtmlManager</class>
+        <url-pattern>.+\.html</url-pattern>
+    </mapping>
+
     <mapping>
         <name>list</name>
         <class>apps.pointApp.List</class>
@@ -61,10 +69,11 @@
     </mapping>
 
     <mapping>
-        <name>Login</name>
+        <name>Logout</name>
         <class>apps.chatApp.setvlet.Logout</class>
         <url-pattern>/chat/logout</url-pattern>
     </mapping>
+
 
     <!-- forcer l'utilisateur a mettre les bons pattern s'il attend des parametres dans l'url, s'il
      n'ecrit pas la regex dans le bon format tant pis pour lui -->
