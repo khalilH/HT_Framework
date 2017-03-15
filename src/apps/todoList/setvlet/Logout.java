@@ -1,7 +1,6 @@
-package apps.chatApp.setvlet;
+package apps.todoList.setvlet;
 
-import apps.chatApp.setvlet.model.Session;
-import apps.chatApp.setvlet.services.UserServices;
+import apps.todoList.setvlet.model.Session;
 import http.*;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.ApplicationResponseInterface;
@@ -20,20 +19,8 @@ public class Logout implements ApplicationInterface {
         ApplicationResponseInterface response = new ApplicationResponse();
         try {
 
-            String reqBody;
-            Session s;
-            reqBody = request.getBody();
-            JSONObject logoutRes = null;
-            if (session == null) {
-                logoutRes = new JSONObject();
-                logoutRes.put("repsonse", "No active session"); //TODO trouver msg
-            }
-            else {
-                s = (Session) session;
-                SessionManager.delete(request.getUniqueId());
-                logoutRes = new JSONObject();
-                logoutRes.put("repsonse", "Deconnexion");
-            }
+            JSONObject logoutRes = new JSONObject();
+            logoutRes.put("success", "Deconnexion");
             response.setBody(logoutRes);
             response.setContentType(Headers.APPLICATION_JSON);
         } catch (JSONException e) {

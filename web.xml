@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routing>
 
-
+    <!-- HTML Manager-->
     <mapping>
         <name>htmlManager</name>
         <class>apps.managerApp.HtmlManager</class>
         <url-pattern>.+\.html</url-pattern>
     </mapping>
 
+
+    <!-- Appli de test de Point semaine 1-->
     <mapping>
         <name>list</name>
         <class>apps.pointApp.List</class>
-        <url-pattern>/list</url-pattern>
+        <url-pattern>/Point/list</url-pattern>
     </mapping>>
 
     <mapping>
         <name>Point</name>
         <class>apps.pointApp.Point</class>
-        <url-pattern>/p</url-pattern>
+        <url-pattern>/Point/p</url-pattern>
     </mapping>
 
     <mapping>
         <name>PointId</name>
         <class>apps.pointApp.PointId</class>
-        <url-pattern>/p/[0-9]+/(x|y)</url-pattern>
+        <url-pattern>/Point/p/[0-9]+/(x|y)</url-pattern>
     </mapping>
 
     <mapping>
         <name>PointId2</name>
         <class>apps.pointApp.PointId2</class>
-        <url-pattern>/p/[0-9]+((\?x=\d+&amp;y=\d+)|(\?x=\d+)|(\?y=\d+))?</url-pattern>
+        <url-pattern>/Point/p/[0-9]+((\?x=\d+&amp;y=\d+)|(\?x=\d+)|(\?y=\d+))?</url-pattern>
     </mapping>
 
+
+    <!-- Appli de memo avec sessions semaine 3-->
+    <!-- surement enlever signup et login -->
     <mapping>
         <name>Inscription</name>
         <class>apps.authenticationApp.Inscription</class>
@@ -56,22 +61,48 @@
         <url-pattern>/notes/add\?note=\w+</url-pattern>
     </mapping>
 
+
+    <!-- Appli de test semaine 5 avec authentification-->
     <mapping>
         <name>Inscription</name>
-        <class>apps.chatApp.setvlet.Signup</class>
-        <url-pattern>/chat/signup</url-pattern>
+        <class>apps.todoList.setvlet.Signup</class>
+        <url-pattern>/Memos/signup</url-pattern>
     </mapping>
 
     <mapping>
         <name>Login</name>
-        <class>apps.chatApp.setvlet.Login</class>
-        <url-pattern>/chat/login</url-pattern>
+        <class>apps.todoList.setvlet.Login</class>
+        <url-pattern>/Memos/login</url-pattern>
     </mapping>
 
     <mapping>
         <name>Logout</name>
-        <class>apps.chatApp.setvlet.Logout</class>
-        <url-pattern>/chat/logout</url-pattern>
+        <class>apps.todoList.setvlet.Logout</class>
+        <url-pattern>/Memos/logout</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>AddMemo</name>
+        <class>apps.todoList.setvlet.AddMemo</class>
+        <url-pattern>/Memos/addMemo</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>RemoveMemo</name>
+        <class>apps.todoList.setvlet.RemoveMemo</class>
+        <url-pattern>/Memos/removeMemo</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>GetMemos</name>
+        <class>apps.todoList.setvlet.GetMemos</class>
+        <url-pattern>/Memos/getMemos\?userId=\d+</url-pattern>
+    </mapping>
+
+    <mapping>
+        <name>GetUserInfo</name>
+        <class>apps.todoList.setvlet.GetUserInfo</class>
+        <url-pattern>/Memos/user\?username=\w+</url-pattern>
     </mapping>
 
 

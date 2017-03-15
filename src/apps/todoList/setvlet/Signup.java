@@ -1,6 +1,6 @@
-package apps.chatApp.setvlet;
+package apps.todoList.setvlet;
 
-import apps.chatApp.setvlet.services.UserServices;
+import apps.todoList.setvlet.services.UserServices;
 import http.*;
 import http.interfaces.ApplicationInterface;
 import http.interfaces.ApplicationResponseInterface;
@@ -21,7 +21,8 @@ public class Signup implements ApplicationInterface {
             String login, password, reqBody;
             reqBody = request.getBody();
             JSONObject jsonBody = new JSONObject(reqBody);
-            JSONObject signupRes = UserServices.signup(jsonBody.getString("login"), jsonBody.getString("password"));
+            JSONObject signupRes = UserServices.signup(jsonBody.getString("login"), jsonBody.getString("password"),
+                    jsonBody.getString("prenom"),jsonBody.getString("nom"),jsonBody.getInt("age"));
             response.setBody(signupRes);
             response.setContentType(Headers.APPLICATION_JSON);
         } catch (JSONException e) {

@@ -1,4 +1,4 @@
-package apps.chatApp.setvlet.model;
+package apps.todoList.setvlet.model;
 
 import http.AbstractSession;
 

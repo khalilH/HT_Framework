@@ -1,5 +1,6 @@
 package http;
 
+import http.interfaces.ResponseInterface;
 import server.HttpServer;
 
 import java.io.IOException;
@@ -21,9 +22,9 @@ public class ResponseBuilder {
 //    public static Response internalServerError(int statusCode, String templateFileName, string path)
 
 
-    public static Response serverResponse(int statusCode, String path) {
+    public static ResponseInterface serverResponse(int statusCode, String path) {
 
-        Response response = new Response();
+        ResponseInterface response = new Response();
 
         try {
             response = new Response();

@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class TemplateLib {
         return template;
     }
 
-    public static String replaceAllObject(String template, HashMap<String, Object> env) throws TemplateVariableNotFoundException, NoSuchFieldException, NoSuchMethodException {
+    public static String replaceAllObject(String template, Map<String, Object> env) throws TemplateVariableNotFoundException, NoSuchFieldException, NoSuchMethodException {
         Pattern pattern = Pattern.compile("%((\\w+)((\\.)(\\w+))?)%");
         Matcher matcher = pattern.matcher(template);
         String varName, value = null, expr, className, getMethod, attrName;
@@ -63,7 +64,7 @@ public class TemplateLib {
                     // Récup les fields de Point
                     className = env.get(varName).getClass().getName();
                     methodClass = Class.forName(className);
-                    classFields = methodClass.getFields();
+                    classFields = methodClass.getDeclaredFields();
 
                     // Check si dans les fields il y a "x"
                     foundField = false;
@@ -73,6 +74,8 @@ public class TemplateLib {
                             break;
                         }
                     }
+
+
 
                     if(!foundField) {
                         throw new NoSuchFieldException("Field "+ tab[1] + " not found in " + className + ".");

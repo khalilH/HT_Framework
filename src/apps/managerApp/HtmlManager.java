@@ -2,10 +2,9 @@ package apps.managerApp;
 
 import http.ApplicationResponse;
 import http.Headers;
-import http.interfaces.ApplicationInterface;
-import http.interfaces.ApplicationResponseInterface;
-import http.interfaces.RequestInterface;
-import http.interfaces.SessionInterface;
+import http.ResponseBuilder;
+import http.StatusCode;
+import http.interfaces.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class HtmlManager implements ApplicationInterface {
         Charset charset = StandardCharsets.UTF_8;
         String path = request.getUrl().getPath();
         path = path.replace("/", File.separator);
-        path = "src" + File.separator + path;
+        path = "src" + File.separator + "apps" + File.separator + path;
         Path fileName = Paths.get(path);
         String content = "";
         try {
@@ -33,9 +32,17 @@ public class HtmlManager implements ApplicationInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ApplicationResponseInterface response = new ApplicationResponse();
-        response.setBody(content);
-        response.setContentType(Headers.TEXT_HTML);
+        ApplicationResponseInterface response;
+        response = new ApplicationResponse();
+        if (content.length() > 0) {
+            response.setBody(content);
+            response.setContentType(Headers.TEXT_HTML);
+        } else {
+            ResponseInterface tmp = ResponseBuilder.serverResponse(StatusCode.NOT_FOUND, request.getUrl().getPath());
+            response.setBody(tmp.getBody());
+            response.setContentType(Headers.TEXT_HTML);
+        }
+
         return response;
     }
 
