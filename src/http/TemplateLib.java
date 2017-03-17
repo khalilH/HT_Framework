@@ -1,12 +1,19 @@
 package http;
 
+import apps.todoList.setvlet.model.User;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import exception.TemplateVariableNotFoundException;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -103,6 +110,14 @@ public class TemplateLib {
         }
 
         return template;
+    }
+
+    public static String replaceInTemplate(String path, Map<String, Object> map) throws IOException, NoSuchMethodException, NoSuchFieldException, TemplateVariableNotFoundException {
+        Path templatePath = Paths.get(path);
+        Charset charset = StandardCharsets.UTF_8;
+        String content = new String(Files.readAllBytes(templatePath), charset);
+        String res = TemplateLib.replaceAllObject(content, map);
+        return res;
     }
 
 }

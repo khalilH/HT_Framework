@@ -86,15 +86,12 @@ public class UserServices {
     public static String getUserInfoTemplate(String username) {
         Map<String, Object> map = new HashMap<>();
 
-        String res = "";
         User user = BDD.getUser(username);
+        String res = "";
         if (user != null) {
             map.put("user", user);
-            Path templatePath = Paths.get(User.templatePath);
-            Charset charset = StandardCharsets.UTF_8;
             try {
-                String content = new String(Files.readAllBytes(templatePath), charset);
-                res = TemplateLib.replaceAllObject(content, map);
+                res = TemplateLib.replaceInTemplate(User.templatePath, map);
             } catch (TemplateVariableNotFoundException e) {
                 e.printStackTrace();
             } catch (NoSuchFieldException e) {
