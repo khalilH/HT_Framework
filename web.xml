@@ -8,6 +8,15 @@
         <url-pattern>.+\.html</url-pattern>
     </mapping>
 
+    <!-- Pour repondre a une requete sur un fichier css, cehrche c'est quoi
+    le content-type dans la doc, + fgaire meme chose pour les fichiers .js-->
+
+    <mapping>
+        <name>cssManager</name>
+        <class>apps.managerApp.CssManager</class>
+        <url-pattern>.+\.css</url-pattern>
+    </mapping>
+
 
     <!-- Appli de test de Point semaine 1-->
     <mapping>

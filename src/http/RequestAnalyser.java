@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by patrick.tran on 07/02/2017.
- */
 public class RequestAnalyser {
 
     /**
