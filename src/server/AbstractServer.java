@@ -60,6 +60,8 @@ public abstract class AbstractServer implements ServerInterface{
         serverSocket = new ServerSocket(port);
         System.out.println("Listening on port "+port+"...");
         while (true) {
+            // TODO avant d'ajouter dans la liste des socket, verifier que la liste ne contient pas plus de 100 elelemts
+            // TODO valeur choisie comme ca, ptet prendre autre chose
             clientSockets.add(serverSocket.accept());
             System.out.print("Connection opened from ");
             Thread t = new Thread(new Runnable() {
