@@ -19,9 +19,6 @@ import java.nio.file.Paths;
  */
 public class ResponseBuilder {
 
-//    public static Response internalServerError(int statusCode, String templateFileName, string path)
-
-
     public static ResponseInterface serverResponse(int statusCode, String path) {
 
         ResponseInterface response = new Response();

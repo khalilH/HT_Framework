@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by ladislas on 07/03/2017.
+ * Classe permettant de retourner une page html d'une application au client
  */
 public class HtmlManager implements ApplicationInterface {
 
@@ -42,7 +42,6 @@ public class HtmlManager implements ApplicationInterface {
             response.setBody(tmp.getBody());
             response.setContentType(Headers.TEXT_HTML);
         }
-
         return response;
     }
 

@@ -156,6 +156,15 @@ public class HttpServer extends AbstractServer {
                     case DELETE:
                         methodName = "doDelete";
                         break;
+                    case OPTIONS:
+                        methodName = "doOptions";
+                        break;
+                    case UPDATE:
+                        methodName = "doUpdate";
+                        break;
+                    case SEARCH:
+                        methodName = "doSearch";
+                        break;
                 }
 
                 Method method = methodClass.getMethod(methodName, RequestInterface.class, SessionInterface.class);

@@ -1,7 +1,7 @@
 package http;
 
 /**
- * Created by patrick.tran on 07/02/2017.
+ * Enumeration pour les methode HTTP disponible
  */
 public enum Method {
     GET, PUT, DELETE, POST, OPTIONS, UPDATE, SEARCH

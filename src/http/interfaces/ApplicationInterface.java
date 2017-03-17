@@ -5,6 +5,7 @@ import http.Method;
 
 /**
  * Interface devant etre implementee par les classes services
+ * d'un utilisateur du framework
  */
 public interface ApplicationInterface {
 
@@ -53,6 +54,42 @@ public interface ApplicationInterface {
     default ApplicationResponseInterface doDelete(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
         throw new MethodNotAllowedException(Method.DELETE.toString());
     };
+
+
+    /**
+     * Methode doUpdate du service
+     * @param request la requete HTTP
+     * @param session une session
+     * @return un objet ApplicationResponseInterface contenant le corps et le content-Type de la reponse
+     * @throws MethodNotAllowedException si l'utilisateur n'implemente pas la methode
+     */
+    default ApplicationResponseInterface doUpdate(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+        throw new MethodNotAllowedException(Method.UPDATE.toString());
+    };
+
+    /**
+     * Methode doOptions du service
+     * @param request la requete HTTP
+     * @param session une session
+     * @return un objet ApplicationResponseInterface contenant le corps et le content-Type de la reponse
+     * @throws MethodNotAllowedException si l'utilisateur n'implemente pas la methode
+     */
+    default ApplicationResponseInterface doOptions(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+        throw new MethodNotAllowedException(Method.OPTIONS.toString());
+    };
+
+    /**
+     * Methode doSearch du service
+     * @param request la requete HTTP
+     * @param session une session
+     * @return un objet ApplicationResponseInterface contenant le corps et le content-Type de la reponse
+     * @throws MethodNotAllowedException si l'utilisateur n'implemente pas la methode
+     */
+    default ApplicationResponseInterface doSearch(RequestInterface request, SessionInterface session) throws MethodNotAllowedException {
+        throw new MethodNotAllowedException(Method.SEARCH.toString());
+    };
+
+
 
 
 }
