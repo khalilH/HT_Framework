@@ -19,11 +19,16 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by ladislas on 28/02/2017.
- */
 public class TemplateLib {
 
+    /**
+     * Replace toutes les String dans le template qui correspondent à des noms de variables, par les valeurs de ces variables
+     * à conditions qu'elles soient des primitives
+     * @param template Template dans lequel on veut remplacer les variables
+     * @param env Hashmap mappant les noms des variables à leurs valeurs
+     * @return Le template dont les variables ont été remplacées par leurs valeurs
+     * @throws TemplateVariableNotFoundException lorsque le fichier de template n'a pas été trouvé
+     */
     public static String replaceAll(String template, HashMap<String, Object> env) throws TemplateVariableNotFoundException {
         Pattern pattern = Pattern.compile("%(\\w+)%");
         Matcher matcher = pattern.matcher(template);
@@ -39,6 +44,16 @@ public class TemplateLib {
         return template;
     }
 
+    /**
+     * Replace toutes les String dans le template qui correspondent à des noms de variables, par les valeurs de ces variables
+     * même si elles sont des attributs d'objet
+     * @param template Template dans lequel on veut remplacer les variables
+     * @param env Hashmap mappant les noms des variables à leurs valeurs
+     * @return Le template dont les variables ont été remplacées par leurs valeurs
+     * @throws TemplateVariableNotFoundException lorsque le fichier de template n'a pas été trouvé
+     * @throws NoSuchFieldException lorsqu'un attribut n'a pas pu être associé à un champ dans la classe de l'objet
+     * @throws NoSuchMethodException lorsque le getter n'a pas pu être trouvé pour un attribut dans la classe de l'objet
+     */
     public static String replaceAllObject(String template, Map<String, Object> env) throws TemplateVariableNotFoundException, NoSuchFieldException, NoSuchMethodException {
         Pattern pattern = Pattern.compile("%((\\w+)((\\.)(\\w+))?)%");
         Matcher matcher = pattern.matcher(template);
@@ -112,11 +127,23 @@ public class TemplateLib {
         return template;
     }
 
-    public static String replaceInTemplate(String path, Map<String, Object> map) throws IOException, NoSuchMethodException, NoSuchFieldException, TemplateVariableNotFoundException {
+    /**
+     * Replace toutes les String dans le template qui correspondent à des noms de variables, par les valeurs de ces variables
+     * même si elles sont des attributs d'objet. Cette fonction permet d'éviter à l'utilisateur de faire lui-même la
+     * lecture de la template
+     * @param path Path vers le template
+     * @param env Hashmap mappant les noms des variables à leurs valeurs
+     * @return Le template dont les variables ont été remplacées par leurs valeurs
+     * @throws IOException lorsqu'il y a eu un soucis au niveau de la lecture du fichier
+     * @throws NoSuchMethodException lorsque le getter n'a pas pu être trouvé pour un attribut dans la classe de l'objet
+     * @throws NoSuchFieldException lorsqu'un attribut n'a pas pu être associé à un champ dans la classe de l'objet
+     * @throws TemplateVariableNotFoundException lorsque le fichier de template n'a pas été trouvé
+     */
+    public static String replaceInTemplate(String path, Map<String, Object> env) throws IOException, NoSuchMethodException, NoSuchFieldException, TemplateVariableNotFoundException {
         Path templatePath = Paths.get(path);
         Charset charset = StandardCharsets.UTF_8;
         String content = new String(Files.readAllBytes(templatePath), charset);
-        String res = TemplateLib.replaceAllObject(content, map);
+        String res = TemplateLib.replaceAllObject(content, env);
         return res;
     }
 
