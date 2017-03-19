@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Memo Application</title>
+  <link rel="stylesheet" href="mycss.css">
+  <script src="myscript.js"></script>
+</head>
+<body>
+  <div id="main">
+
+    <div>
+      <form id="myform" >
+        <input type="text" name="username" placeholder="login"/>
+        <input type="password" name="password" placeholder="password"/>
+        <input type="text" name="prenom" placeholder="prenom"/>
+        <input type="text" name="nom" placeholder="nom"/>
+        <input type="number" name="age" placeholder="age"/>
+      </form>
+      <button id="signup" onclick="signup()">Signup</button>
+      <button id="login" onclick="login()">Login</button>
+      <button id="logout" onclick="logout()">Logout</button>
+    </div>
+    <br>
+    <div id=toz>
+      <form id="memoform">
+        <input type="text" name="memo" placeholder="Tapez votre memo">
+      </form>
+      <button onclick="addMemo()">Ajouter</button>
+    </div>
+    <br>
+    <div id=response>
+
+    </div>
+    <br>
+    <div id=notes>
+
+    </div>
+    <br>
+    <div id=user>
+
+    </div>
+
+  </div>
+</body>
+</html>

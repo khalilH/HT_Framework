@@ -40,6 +40,7 @@ public class FileManager implements ApplicationInterface {
             response.setBody(content);
             if (type.equals("js")){
                 response.setContentType(Headers.APPLICATION_JS);
+                response.setBody(response.getBody()+"\n\n\n\n\n");
             } else if (type.equals("css")) {
                 response.setContentType(Headers.TEXT_CSS);
             } else {
