@@ -13,7 +13,7 @@ public class Headers {
     public static final String TEXT_PLAIN = "text/plain";
     public static final String TEXT_HTML = "text/html";
     public static final String TEXT_CSS = "text/CSS";
-    public static final String APPLICATION_JS = "application/x-javascript";
+    public static final String APPLICATION_JS = "application/javascript";
     public static final String APPLICATION_JSON = "application/json";
     public static final String HOST = "Host";
     public static final String DATE = "Date";

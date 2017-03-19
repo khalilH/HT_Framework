@@ -31,22 +31,16 @@ public class Login implements ApplicationInterface {
             if (jsonResponse.has("id")) {
                 int id = jsonResponse.getInt("id");
                 if (session != null) {
-                    if (session instanceof Session) {
-                        s = (apps.todoList.setvlet.model.Session) session;
-                        if (id == s.getId()) {
-                            System.out.println(">>>> La session existe et c'est celle de l'utilisateur");
-                        } else {
-                            System.out.println(">>>> La session existe mais ce n'est pas celle de l'utilisateur");
-                            System.out.println(">>>> on ecrase la session precedente");
-                            s.setId(id);
-                            SessionManager.save(request.getUniqueId(), s);
-                        }
+                    s = (apps.todoList.setvlet.model.Session) session;
+                    if (id != s.getId()) {
+                        s.setId(id);
+                        SessionManager.save(request, s);
                     }
                 } else {
                     System.out.println(">>>> La session n'existe pas");
                     s = new Session();
                     s.setId(id);
-                    SessionManager.save(request.getUniqueId(), s);
+                    SessionManager.save(request, s);
                 }
             }
 

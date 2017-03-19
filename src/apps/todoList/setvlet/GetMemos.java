@@ -26,9 +26,9 @@ public class GetMemos implements ApplicationInterface{
             JSONObject jsonResponse = new JSONObject();
 
             if (session != null) {
-                if (session instanceof Session) {
-                    s = (Session) session;
-                    userId = s.getId();
+                s = (Session) session;
+                userId = s.getId();
+                if (userId == Integer.parseInt(request.getParameter("userId"))) {
                     jsonResponse = UserServices.getMemos(request.getParameter("userId"));
                 } else {
                     jsonResponse.put("error", "Vous n'etes pas connecte");
