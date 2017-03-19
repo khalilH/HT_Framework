@@ -1,5 +1,6 @@
 package http;
 
+import http.interfaces.RequestInterface;
 import http.interfaces.SessionInterface;
 
 /**
@@ -9,15 +10,15 @@ public class SessionManager {
 
     /**
      * Permet de sauvegarder la session d'un utilisateur
-     * @param uniqueId l'identifiant unique associe a un utilisateur d'une application
+     * @param request la requete d'origine
      * @param session la session mise a jour
      */
-    public static void save(String uniqueId, SessionInterface session){
-        SessionTable.saveSession(uniqueId, session);
+    public static void save(RequestInterface request, SessionInterface session){
+        SessionTable.saveSession(request.getUniqueId(), session, request.getUrl().getAppName());
     }
 
-    public static void delete(String uniqueId) {
-        SessionTable.deleteSession(uniqueId);
+    public static void delete(RequestInterface request) {
+        SessionTable.deleteSession(request.getUniqueId(), request.getUrl().getAppName());
     }
 
 }

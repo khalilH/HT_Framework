@@ -29,13 +29,9 @@ public class RemoveMemo implements ApplicationInterface {
             JSONObject jsonResponse = new JSONObject();
 
             if (session != null) {
-                if (session instanceof Session) {
-                    s = (Session) session;
-                    userId = s.getId();
-                    jsonResponse = UserServices.removeMemo(userId+"", jsonRequestBody.getInt("memoId"));
-                } else {
-                    jsonResponse.put("error", "Vous n'etes pas connecte");
-                }
+                s = (Session) session;
+                userId = s.getId();
+                jsonResponse = UserServices.removeMemo(userId+"", jsonRequestBody.getInt("memoId"));
             } else {
                 jsonResponse.put("error", "Vous n'etes pas connecte");
             }

@@ -60,6 +60,16 @@ public class Url {
         this.path = path;
     }
 
+    /**
+     * Permet de recuperer le nom de l'application
+     * @return le nom de l'application
+     */
+    public String getAppName() {
+        String path = getPath();
+        String[] tab = path.split("/");
+        return tab[0];
+    }
+
     public Map<String, String> getArguments() {
         return arguments;
     }

@@ -19,11 +19,11 @@ public class SauverNote implements ApplicationInterface {
             if (session == null) {
                 s = new Session();
                 s.getNotes().add(note);
-                SessionManager.save(request.getUniqueId(), s);
+                SessionManager.save(request, s);
             } else {
                 s = (Session) session;
                 s.getNotes().add(note);
-                SessionManager.save(request.getUniqueId(), s);
+                SessionManager.save(request, s);
             }
         response.setBody(s.getNotes().size()+"");
         return response;

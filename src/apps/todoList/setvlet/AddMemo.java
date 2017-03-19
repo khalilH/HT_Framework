@@ -29,17 +29,12 @@ public class AddMemo implements ApplicationInterface {
             String memo = jsonRequestBody.getString("memo");
             JSONObject jsonResponse = new JSONObject();
             if (session != null) {
-                if (session instanceof Session) {
-                    s = (apps.todoList.setvlet.model.Session) session;
-                    userId = s.getId();
-                    jsonResponse = UserServices.addMemo(userId, memo);
-                } else {
-                    jsonResponse.put("error", "Vous n'etes pas connecte");
-                }
+                s = (apps.todoList.setvlet.model.Session) session;
+                userId = s.getId();
+                jsonResponse = UserServices.addMemo(userId, memo);
             } else {
                 jsonResponse.put("error", "Vous n'etes pas connecte");
             }
-
 
             response.setBody(jsonResponse);
             response.setContentType(Headers.APPLICATION_JSON);
