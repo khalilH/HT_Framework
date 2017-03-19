@@ -33,14 +33,4 @@ public class Signup implements ApplicationInterface {
         return response;
     }
 
-//    @Override
-//    public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
-//        ApplicationResponseInterface response = new ApplicationResponse();
-//        String login, password, reqBody;
-//        JSONObject signupRes = UserServices.signup(request.getParameter("login"), request.getParameter("password"));
-//        response.setBody(signupRes);
-//        response.setContentType(Headers.APPLICATION_JSON);
-//        return response;
-//    }
-
 }
