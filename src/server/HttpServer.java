@@ -212,7 +212,7 @@ public class HttpServer extends AbstractServer {
 
     public static void main(String[] args) {
         try {
-            HttpServer httpServer = new HttpServer(1801);
+            HttpServer httpServer = new HttpServer(80);
             httpServer.start();
         } catch (Exception e) {
             System.err.println(e.getMessage());
