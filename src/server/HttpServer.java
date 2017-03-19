@@ -57,6 +57,7 @@ public class HttpServer extends AbstractServer {
 
         // Recuperation du chemin de la requete
         Url url = request.getUrl();
+        String appName = url.getAppName();
         String path = url.getEntirePath();
         ResponseInterface response = null;
 
@@ -101,7 +102,7 @@ public class HttpServer extends AbstractServer {
                         // la valeur hachee de son IP et son User-agent
 
                         // Recuperation de sa session a partir de son identifiant unique
-                        SessionInterface _session = SessionTable.getUserSession(uniqueId);
+                        SessionInterface _session = SessionTable.getUserSession(uniqueId, appName);
 
                         // Si la session n'a pas expiree on l'a recupere
                         if (_session != null && _session.isAlive()) {
