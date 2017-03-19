@@ -1,5 +1,6 @@
 package apps.todoList.setvlet;
 
+import apps.todoList.setvlet.model.Session;
 import apps.todoList.setvlet.services.UserServices;
 import http.ApplicationResponse;
 import http.Headers;
@@ -20,7 +21,22 @@ public class GetMemos implements ApplicationInterface{
     public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
         ApplicationResponseInterface response = new ApplicationResponse();
         try {
-            JSONObject jsonResponse = UserServices.getMemos(request.getParameter("userId"));
+            Session s;
+            int userId;
+            JSONObject jsonResponse = new JSONObject();
+
+            if (session != null) {
+                if (session instanceof Session) {
+                    s = (Session) session;
+                    userId = s.getId();
+                    jsonResponse = UserServices.getMemos(request.getParameter("userId"));
+                } else {
+                    jsonResponse.put("error", "Vous n'etes pas connecte");
+                }
+            } else {
+                jsonResponse.put("error", "Vous n'etes pas connecte");
+            }
+
             response.setBody(jsonResponse);
             response.setContentType(Headers.APPLICATION_JSON);
         } catch (JSONException e) {

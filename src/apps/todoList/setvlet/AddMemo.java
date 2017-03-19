@@ -1,5 +1,6 @@
 package apps.todoList.setvlet;
 
+import apps.todoList.setvlet.model.Session;
 import apps.todoList.setvlet.services.UserServices;
 import http.ApplicationResponse;
 import http.Headers;
@@ -21,9 +22,25 @@ public class AddMemo implements ApplicationInterface {
     public ApplicationResponseInterface doPost(RequestInterface request, SessionInterface session) {
         ApplicationResponseInterface response = new ApplicationResponse();
         try {
-          String requestBody = request.getBody();
+            Session s;
+            String requestBody = request.getBody();
             JSONObject jsonRequestBody = new JSONObject(requestBody);
-            JSONObject jsonResponse = UserServices.addMemo(jsonRequestBody.getInt("userId"), jsonRequestBody.getString("memo"));
+            int userId;
+            String memo = jsonRequestBody.getString("memo");
+            JSONObject jsonResponse = new JSONObject();
+            if (session != null) {
+                if (session instanceof Session) {
+                    s = (apps.todoList.setvlet.model.Session) session;
+                    userId = s.getId();
+                    jsonResponse = UserServices.addMemo(userId, memo);
+                } else {
+                    jsonResponse.put("error", "Vous n'etes pas connecte");
+                }
+            } else {
+                jsonResponse.put("error", "Vous n'etes pas connecte");
+            }
+
+
             response.setBody(jsonResponse);
             response.setContentType(Headers.APPLICATION_JSON);
         } catch (JSONException e) {

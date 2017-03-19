@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>signup</title>
-  <link rel="stylesheet" href="/todoList/webapp/master.css">
+  <!-- <link rel="stylesheet" href="/todoList/webapp/master.css"> -->
 </head>
 <body>
   <style>
@@ -149,7 +149,6 @@
             document.getElementById('user').innerHTML = "";
             document.getElementById('notes').innerHTML = "";
             document.getElementById('toz').style.display = "none";
-            docue
           } else {
             document.getElementById('response').innerHTML = json.error;
           }
@@ -159,7 +158,11 @@
         }
       }
     }
-    req.send();
+    var data = {};
+    data.userId = getCookie(C_USER_ID);
+    if (data.userId != null) {
+      req.send(JSON.stringify(data));
+    }
   }
 
   function addMemo() {
@@ -185,9 +188,10 @@
       }
     }
     var data = {};
-    data.userId = getCookie(C_USER_ID);
+    // data.userId = getCookie(C_USER_ID);
     data.memo = memo;
-    if (data.userId != null && data.memo != "") {
+    // if (data.userId != null && data.memo != "") {
+    if (data.memo != "") {
       form.memo.value = "";
       console.log("adding up with "+JSON.stringify(data));
       req.send (JSON.stringify(data));
@@ -215,7 +219,7 @@
       }
     }
     var data = {};
-    data.userId = getCookie(C_USER_ID);
+    // data.userId = getCookie(C_USER_ID);
     data.memoId = memoId;
     console.log("adding up with "+JSON.stringify(data));
     req.send (JSON.stringify(data));

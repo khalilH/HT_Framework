@@ -20,7 +20,26 @@ public class Logout implements ApplicationInterface {
         try {
 
             JSONObject logoutRes = new JSONObject();
-            logoutRes.put("success", "Deconnexion");
+            JSONObject jsonBody = new JSONObject(request.getBody());
+            int userId = Integer.parseInt(jsonBody.getString("userId"));
+            Session s;
+            if (session != null) {
+                if (session instanceof Session) {
+                    s = (apps.todoList.setvlet.model.Session) session;
+                    if (userId == s.getId()) {
+                        SessionManager.delete(request.getUniqueId());
+                        logoutRes.put("success", "Deconnexion");
+                    } else {
+                        logoutRes.put("error", "Vous n'etes pas connecte");
+                    }
+                } else {
+                    logoutRes.put("error", "Vous n'etes pas connecte");
+                }
+            } else {
+                logoutRes.put("error", "Vous n'etes pas connecte");
+            }
+
+
             response.setBody(logoutRes);
             response.setContentType(Headers.APPLICATION_JSON);
         } catch (JSONException e) {
