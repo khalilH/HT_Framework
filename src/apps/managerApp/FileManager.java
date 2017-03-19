@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 /**
  * Classe permettant de retourner une page html d'une application au client
  */
-public class HtmlManager implements ApplicationInterface {
+public class FileManager implements ApplicationInterface {
 
     @Override
     public ApplicationResponseInterface doGet(RequestInterface request, SessionInterface session) {
@@ -26,6 +26,8 @@ public class HtmlManager implements ApplicationInterface {
         path = path.replace("/", File.separator);
         path = "src" + File.separator + "apps" + File.separator + path;
         Path fileName = Paths.get(path);
+        String[] tab = fileName.toString().split("\\.");
+        String type = tab[tab.length-1];
         String content = "";
         try {
             content = new String(Files.readAllBytes(fileName), charset);
@@ -36,7 +38,13 @@ public class HtmlManager implements ApplicationInterface {
         response = new ApplicationResponse();
         if (content.length() > 0) {
             response.setBody(content);
-            response.setContentType(Headers.TEXT_HTML);
+            if (type.equals("js")){
+                response.setContentType(Headers.APPLICATION_JS);
+            } else if (type.equals("css")) {
+                response.setContentType(Headers.TEXT_CSS);
+            } else {
+                response.setContentType(Headers.TEXT_HTML);
+            }
         } else {
             ResponseInterface tmp = ResponseBuilder.serverResponse(StatusCode.NOT_FOUND, request.getUrl().getPath());
             response.setBody(tmp.getBody());

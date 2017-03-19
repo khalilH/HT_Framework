@@ -3,9 +3,9 @@
 
     <!-- HTML Manager-->
     <mapping>
-        <name>htmlManager</name>
-        <class>apps.managerApp.HtmlManager</class>
-        <url-pattern>.+\.html</url-pattern>
+        <name>FileManager</name>
+        <class>apps.managerApp.FileManager</class>
+        <url-pattern>.+((\.html)|(\.js)|(\.css))</url-pattern>
     </mapping>
 
     <!-- Pour repondre a une requete sur un fichier css, cehrche c'est quoi
