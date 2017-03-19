@@ -62,7 +62,10 @@ public abstract class AbstractServer implements ServerInterface{
         while (true) {
             // TODO avant d'ajouter dans la liste des socket, verifier que la liste ne contient pas plus de 100 elelemts
             // TODO valeur choisie comme ca, ptet prendre autre chose
-            clientSockets.add(serverSocket.accept());
+            if(clientSockets.size() < 100)
+                clientSockets.add(serverSocket.accept());
+            else
+                continue;
             System.out.print("Connection opened from ");
             Thread t = new Thread(new Runnable() {
                 @Override
