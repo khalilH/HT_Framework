@@ -14,7 +14,7 @@ public class CookieTable {
      * Liste d'association (cle, valeur) contenant les listes de cookies des utilisateurs
      * La cle est l'identifiant unique d'un utilisateur (qui est le cookie envoye au client)
      * La valeur est la liste des cookies associee a un utilisateur
-     * Dans la liste de cookie, le premier cookie est toujour le cookie privee : cookie contenant
+     * Dans la liste de cookies, le premier cookie est toujours le cookie prive : cookie contenant
      * la valeur hachee de l'IP et du User Agent d'un utilisateur
      * Ce coookie prive n'est jamais envoye a un client
      */

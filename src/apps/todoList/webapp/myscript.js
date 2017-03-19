@@ -244,7 +244,9 @@ function afficherMemo(json) {
   notes.innerHTML = "";
   for (var i = 0; i<length; i++) {
     var div = document.createElement("div");
-    div.innerHTML = "<span>"+tab[i]+"<span><button onclick=removeMemo("+i+")>remove</button>";
+    // div.setAttribute("style", "margin-bottom: 20px;")
+      div.setAttribute("class", "col-md-12");
+    div.innerHTML = "<div class='col-md-2'><span>"+tab[i]+"<span></div><div class='col-md-6'><button class='btn mg-left10' onclick=removeMemo("+i+")>remove</button></div>";
     notes.appendChild(div);
   }
 }
@@ -259,7 +261,8 @@ function getUserInfo() {
       if (req.readyState == 4) {
         if(req.status == 200) {
           console.log("debug - getMemosResponse : "+req.responseText);
-          document.getElementById('user').innerHTML = req.responseText;
+          var userDiv = document.getElementById('user');
+          userDiv.innerHTML = req.responseText;
         }
         else {
           console.error("error");
