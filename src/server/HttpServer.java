@@ -3,10 +3,7 @@ package server;
 import exception.MapperFileException;
 import exception.MethodNotAllowedException;
 import http.*;
-import http.interfaces.ApplicationResponseInterface;
-import http.interfaces.RequestInterface;
-import http.interfaces.ResponseInterface;
-import http.interfaces.SessionInterface;
+import http.interfaces.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -94,10 +91,10 @@ public class HttpServer extends AbstractServer {
         } else {
 
             // Gestion cookie + session
-            if(hasUniqueIdCookie) {
-                if(CookieTable.cookieMap.containsKey(uniqueId)){
+            if (hasUniqueIdCookie) {
+                if (CookieTable.cookieMap.containsKey(uniqueId)) {
                     Cookie privateCookie = CookieTable.getUserCookies(uniqueId).get(0);
-                    if(privateCookie.getValue().equals(userHash)) {
+                    if (privateCookie.getValue().equals(userHash)) {
                         // On verifie que le cookie envoye par l'utilisateur correspond bien a
                         // la valeur hachee de son IP et son User-agent
 
@@ -108,24 +105,24 @@ public class HttpServer extends AbstractServer {
                         if (_session != null && _session.isAlive()) {
                             session = _session;
                         }
-                    }else{
+                    } else {
                         // Le cookie envoye ne correspond pas a la valeur hachee de l'IP et du user-agent
                         // on genere donc un nouveau cookie a l'utilisateur sans recuperer la session
                         // associee au cookie qu'il nous avait envoye
                         idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                         Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                         List<Cookie> cookieList = new ArrayList<>();
-                        cookieList.add(0,hashCookie);
+                        cookieList.add(0, hashCookie);
                         CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
                     }
 
-                }else{
+                } else {
                     // Le cookie envoye n'est pas present dans la table de cookie
                     // on genere donc un nouveau cookie a l'utilisateur
                     idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                     List<Cookie> cookieList = new ArrayList<>();
                     Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
-                    cookieList.add(0,hashCookie);
+                    cookieList.add(0, hashCookie);
                     CookieTable.addCookiesToUser(idCookie.getValue(), cookieList);
                 }
             } else {
@@ -135,7 +132,7 @@ public class HttpServer extends AbstractServer {
                 idCookie = new Cookie(CookieTable.UNIQUE_ID, UUID.randomUUID().toString());
                 Cookie hashCookie = new Cookie(CookieTable.USER_HASH, userHash);
                 List<Cookie> requestCookiesClone = new ArrayList<>(request.getCookies());
-                requestCookiesClone.add(0,hashCookie);
+                requestCookiesClone.add(0, hashCookie);
                 CookieTable.addCookiesToUser(idCookie.getValue(), requestCookiesClone);
             }
 
@@ -143,6 +140,9 @@ public class HttpServer extends AbstractServer {
             try {
                 Class methodClass = Class.forName(className);
                 Object classInstance = methodClass.newInstance();
+                if (!(classInstance instanceof ApplicationInterface)) {
+                    throw new IllegalArgumentException(className + " n'est pas une ApplicationInterface");
+                }
                 String methodName = "";
                 switch (request.getMethod()) {
                     case GET:
@@ -196,7 +196,10 @@ public class HttpServer extends AbstractServer {
                     System.out.println(e.getCause()); //TODO
                     e.printStackTrace();
                 }
-            } finally {
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath());
+            }finally {
                 if (response == null) {
                     response = ResponseBuilder.serverResponse(StatusCode.INTERNAL_SERVER_ERROR, request.getUrl().getPath());
                 }

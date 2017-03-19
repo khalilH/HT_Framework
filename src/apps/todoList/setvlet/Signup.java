@@ -12,9 +12,8 @@ import org.json.JSONObject;
 /**
  * Created by ladislas on 07/03/2017.
  */
-public class Signup implements ApplicationInterface {
+public class Signup  {
 
-    @Override
     public ApplicationResponseInterface doPost(RequestInterface request, SessionInterface session) {
         ApplicationResponseInterface response = new ApplicationResponse();
         try {
