@@ -276,4 +276,7 @@ function getUserInfo() {
 window.addEventListener("load", function(){
   getMemos();
   getUserInfo();
+  if (getCookie(C_USER_ID) != null && getCookie(C_USER_ID) != -1) {
+    document.getElementById('toz').style.display = "block";
+  }
 },false);
